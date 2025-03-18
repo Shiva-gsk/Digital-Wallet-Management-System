@@ -1,103 +1,184 @@
-import Image from "next/image";
-
+"use client";
+import { useEffect } from "react";
+import { syncUsers } from "@/app/actions/syncUsers";
+import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
+import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import Link from "next/link";
+import { Wallet, SendHorizonal, FileText } from "lucide-react"
+import Header from "@/components/Navbar";
 export default function Home() {
+  const { isSignedIn } = useUser();
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (isSignedIn) {
+  //       await syncUsers(); // Call only when user is signed in
+  //     }
+  //   };
+  //   fetchData();
+  // }, [isSignedIn]); // Dependency added to prevent unnecessary calls
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <main>
+        <Header/>
+      <SignedOut>
+        <p>Please log in to see the user button.
+          <Link href={"/signIn"}>SignIn</Link>
+        </p>
+      </SignedOut>
+      <SignedIn>
+        <div className="flex justify-between items-center gap-4">
+          {/* <div>
+            Welcome
+          </div>
+          <div className="">
+        <UserButton />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div> */}
+
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      {/* <div className="w-full h-full flex justify-center items-center gap-4">
+        <CardWrapper>
+        <Link href={"/send-money"}>
+          <div
+          
+          className="py-10 cursor-pointer w-full h-full text-center justify-center items-center"
+          >
+            <div className="flex justify-center items-center w-full h-full p-2">
+              <Send />
+            </div>
+            <div className=" w-full h-full text-center">Send Money</div>
+          </div>
+          </Link>
+        </CardWrapper>
+        <CardWrapper>
+        <Link href={"/money-request"}>
+          <div
+            className="py-10 cursor-pointer w-full h-full text-center justify-center items-center"
+            >
+            <div className="flex justify-center items-center w-full h-full p-2">
+              <HandCoins />
+            </div>
+            <div className="cursor-pointer w-full h-full text-center">
+            Money Request
+            </div>
+          </div>
+          </Link>
+        </CardWrapper>
+        <CardWrapper>
+        <Link href={"/wallet"}>
+          <div className="py-10 cursor-pointer w-full h-full text-center justify-center items-center">
+            <div className="flex justify-center items-center w-full h-full p-2">
+              <Wallet />
+            </div>
+            <div className="cursor-pointer w-full h-full text-center">
+             View Wallet
+            </div>
+          </div>
+          </Link>
+        </CardWrapper>
+      </div> */}
+      <div className="container mx-auto px-4 py-8">
+      <h1 className="mb-8 text-3xl font-bold text-center">Digital Wallet</h1>
+
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <Link href="/send-money" className="block">
+          <Card className="h-full transition-all hover:shadow-md">
+            <CardContent className="flex flex-col items-center justify-center p-6">
+              <SendHorizonal className="mb-4 h-12 w-12 text-blue-500" />
+              <h2 className="text-xl font-semibold">Send Money</h2>
+              <p className="mt-2 text-center text-muted-foreground">
+                Transfer funds to other users quickly and securely
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/money-request" className="block">
+          <Card className="h-full transition-all hover:shadow-md">
+            <CardContent className="flex flex-col items-center justify-center p-6">
+              <FileText className="mb-4 h-12 w-12 text-red-400" />
+              <h2 className="text-xl font-semibold ">Money Request</h2>
+              <p className="mt-2 text-center text-muted-foreground">Send, view and manage money requests</p>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/wallet" className="block">
+          <Card className="h-full transition-all hover:shadow-md">
+            <CardContent className="flex flex-col items-center justify-center p-6">
+              <Wallet className="mb-4 h-12 w-12 text-yellow-300" />
+              <h2 className="text-xl font-semibold">Wallet</h2>
+              <p className="mt-2 text-center text-muted-foreground">View your wallet details and transaction history</p>
+            </CardContent>
+          </Card>
+        </Link>
+      </div>
+
+      <div className="mt-12">
+        <h2 className="mb-4 text-2xl font-semibold">Recent Transactions</h2>
+        <Card>
+          <CardContent className="p-6">
+            <div className="space-y-4">
+              {recentTransactions.map((transaction) => (
+                <div key={transaction.id} className="flex items-center justify-between border-b pb-3">
+                  <div className="flex items-center">
+                    <div
+                      className={`mr-4 rounded-full p-2 ${transaction.type === "received" ? "bg-green-100" : "bg-blue-100"}`}
+                    >
+                      {transaction.type === "received" ? (
+                        <SendHorizonal className="h-5 w-5 rotate-180 text-green-600" />
+                      ) : (
+                        <SendHorizonal className="h-5 w-5 text-blue-600" />
+                      )}
+                    </div>
+                    <div>
+                      <p className="font-medium">{transaction.user}</p>
+                      <p className="text-sm text-muted-foreground">{transaction.date}</p>
+                    </div>
+                  </div>
+                  <p
+                    className={`font-semibold ${transaction.type === "received" ? "text-green-600" : "text-blue-600"}`}
+                  >
+                    {transaction.type === "received" ? "+" : "-"}${transaction.amount}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <Button variant="outline" className="mt-4 w-full">
+              View All Transactions
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
     </div>
+  </SignedIn>
+    </main>
   );
 }
+
+
+
+const recentTransactions = [
+  {
+    id: 1,
+    user: "John Doe",
+    amount: "25.00",
+    type: "sent",
+    date: "Today, 2:30 PM",
+  },
+  {
+    id: 2,
+    user: "Jane Smith",
+    amount: "42.50",
+    type: "received",
+    date: "Yesterday, 11:15 AM",
+  },
+  {
+    id: 3,
+    user: "Mike Johnson",
+    amount: "10.75",
+    type: "sent",
+    date: "Mar 14, 9:20 AM",
+  },
+]
