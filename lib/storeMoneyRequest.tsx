@@ -4,12 +4,12 @@ import { db } from "./db";
 export const storeMoneyRequest = async(senderId: string, receiverId:string, amount:number, desc:string="Rent") => {
     console.log(senderId, receiverId, amount, desc);
     try{
-        await db.transaction.create({
+        await db.moneyRequest.create({
             data:{
                 receiver_id:receiverId,
                 sender_id:senderId,
                 amount:amount,
-                status:"progress",
+                status:"pending",
                 desc:desc,
             }
         })

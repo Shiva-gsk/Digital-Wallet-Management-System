@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { useEffect } from "react"
 
 interface RequestListProps {
   requests: MoneyRequest[]
@@ -25,6 +26,14 @@ export function RequestList({ requests, type }: RequestListProps) {
       </div>
     )
   }
+  
+  // useEffect(()=>{
+  //   console.log();
+  // }, [requests]);
+
+  function handleCancel(event: React.MouseEvent<HTMLButtonElement>): void {
+    console.log("Cancel request");
+  }
 
   return (
     <div className="space-y-3">
@@ -34,12 +43,12 @@ export function RequestList({ requests, type }: RequestListProps) {
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <Avatar className="mr-4 h-10 w-10">
-                  <AvatarImage src={request.user.avatar} alt={request.user.name} />
-                  <AvatarFallback>{request.user.name.charAt(0)}</AvatarFallback>
+                  <AvatarImage src={""} alt={""} />
+                  <AvatarFallback>{"J"}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-medium">{request.user.name}</p>
-                  <p className="text-sm text-muted-foreground">{request.date}</p>
+                  <p className="font-medium">{(type == "received")?request.sender?.name : request.receiver?.name}</p>
+                  <p className="text-sm text-muted-foreground">{request.request_date.toLocaleString()}</p>
                 </div>
               </div>
               <div className="text-right">
@@ -77,7 +86,7 @@ export function RequestList({ requests, type }: RequestListProps) {
 
             {type === "sent" && request.status === "pending" && (
               <div className="mt-4 flex justify-end">
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={handleCancel}>
                   Cancel Request
                 </Button>
               </div>
