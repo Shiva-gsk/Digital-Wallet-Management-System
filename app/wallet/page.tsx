@@ -10,15 +10,22 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { PinInput } from "@/components/pin-input"
 import { useUser } from "@clerk/nextjs";
 import { fetchWalletbyUser } from "@/lib/getWallet"
+import { UserType } from "@/types"
+import { fetchUserbyId } from "@/lib/getUser"
+import { WalletButton } from "@/components/walletButton"
 export default function WalletPage() {
   const [showBalance, setShowBalance] = useState(false)
   const [pinVerified, setPinVerified] = useState(false)
   const [showPinInput, setShowPinInput] = useState(false)
   const [balance, setBalance] = useState(0);
-
+  const [currentUser, setCurrentUser] = useState<UserType>();
   const handleVerifyPin = (pin: string) => {
+    if(!currentUser){
+      alert("Someting went Wrong! Try Later");
+      return;
+    } 
     // In a real app, you would verify the PIN against the stored value
-    if (pin === "1234") {
+    if (Number(pin) === currentUser?.password) {
       setPinVerified(true)
       setShowBalance(true)
       setShowPinInput(false)
@@ -43,6 +50,9 @@ export default function WalletPage() {
   useEffect(()=>{
     if(isLoaded && user){
       // console.log(user);
+      fetchUserbyId(user.id).then((data)=>{
+        if(data) setCurrentUser(data);
+      })
       fetchWalletbyUser(user.id).then((data) => {
         if (data) {
           setBalance(data.balance)
@@ -60,7 +70,16 @@ export default function WalletPage() {
             <ArrowLeft className="h-5 w-5" />
           </Button>
         </Link>
+        <div className="flex justify-between w-full">
+
         <h1 className="text-2xl font-bold">My Wallet</h1>
+    
+        <WalletButton>
+          Set Password
+        </WalletButton>
+
+        
+        </div>
       </div>
 
       <Card className="mb-8">
@@ -89,7 +108,16 @@ export default function WalletPage() {
           )}
         </CardContent>
       </Card>
-
+    <div className="w-full justify-around flex pb-4">
+      {/* <Button className="h-10 w-[35%] cursor-pointer" >Deposit</Button>
+      <Button className="h-10 w-[35%] cursor-pointer" >Withdraw</Button> */}
+      <WalletButton>
+        Deposit
+      </WalletButton>
+      <WalletButton>
+        Withdraw
+      </WalletButton>
+    </div>
       <Tabs defaultValue="transactions" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="transactions">Transactions</TabsTrigger>

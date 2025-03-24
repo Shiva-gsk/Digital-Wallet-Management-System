@@ -4,16 +4,17 @@ import type React from "react"
 
 import { useEffect, useState } from "react"
 import { X, Check, Loader2 } from "lucide-react"
-import type { UserType } from "@/app/send-money/page"
+import type { UserType } from "@/types"
 
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { PinInput } from "@/components/pin-input"
 import { fetchWalletbyUser } from "@/lib/getWallet"
 import { useUser } from "@clerk/nextjs"
 import { sendMoneyById } from "@/lib/sendMoney"
+import { Textarea } from "./ui/textarea"
 
 interface SendMoneyModalProps {
   user: UserType
@@ -24,6 +25,7 @@ export function SendMoneyModal({ user, onClose }: SendMoneyModalProps) {
   const [amount, setAmount] = useState("")
   const [step, setStep] = useState<"amount" | "pin" | "processing" | "success" | "error">("amount")
   const [error, setError] = useState("");
+  const [reason, setReason] = useState("");
   const [balance, setBalance] = useState(0);
   const [money, setMoney] = useState(0);
   const [receiver, setReceiver] = useState("");
@@ -39,7 +41,7 @@ export function SendMoneyModal({ user, onClose }: SendMoneyModalProps) {
       });
       // console.log(balance);
     }
-  }, [isLoaded, user, balance])
+  }, [isLoaded, user, balance, clerkUser])
 
   const handleAmountSubmit = (e: React.FormEvent, id: string) => {
     e.preventDefault()
@@ -61,13 +63,14 @@ export function SendMoneyModal({ user, onClose }: SendMoneyModalProps) {
 
   const handlePinSubmit = (pin: string) => {
     // In a real app, you would verify the PIN against the stored value
+    console.log(pin);
     setStep("processing")
     if(!clerkUser || !clerkUser.id){
       setError("User not found");
       setStep("error");
       return
     }
-    sendMoneyById(clerkUser.id, receiver, money).then((data) => {
+    sendMoneyById(clerkUser.id, receiver, money, reason).then((data) => {
       console.log(data);
       if(data){
         setStep("success")
@@ -100,7 +103,7 @@ export function SendMoneyModal({ user, onClose }: SendMoneyModalProps) {
           <div className="space-y-4 py-4">
             <div className="flex items-center justify-center">
               <Avatar className="h-16 w-16">
-                <AvatarImage src={user.avatar} alt={user.name} />
+                {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
                 <AvatarFallback>{user.name ? user.name.charAt(0) : "?"}</AvatarFallback>
               </Avatar>
             </div>
@@ -120,6 +123,17 @@ export function SendMoneyModal({ user, onClose }: SendMoneyModalProps) {
                   onChange={(e) => setAmount(e.target.value)}
                 />
               </div>
+              <div className="space-y-2">
+              <label htmlFor="reason" className="text-sm font-medium">
+                Reason (optional)
+              </label>
+              <Textarea
+                id="reason"
+                placeholder="What's this for?"
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+              />
+            </div>
 
               {error && <p className="text-sm text-destructive">{error}</p>}
 

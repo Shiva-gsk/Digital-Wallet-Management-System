@@ -6,14 +6,15 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+// import { Card, CardContent } from "@/components/ui/card";
+// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UserList } from "@/components/user-list";
 import { SendMoneyModal } from "@/components/send-money-model";
 import { fetchAllUsers } from "@/lib/getUser";
 import { useUser } from "@clerk/nextjs";
 // import Loading from "@/components/loading";
 import  SkeletonDemo  from "./loading";
+import { UserType } from "@/types";
 
 export default function SendMoneyPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -101,7 +102,7 @@ export default function SendMoneyPage() {
         <SendMoneyModal user={selectedUser} onClose={handleCloseModal} />
       )}
 
-      <Card className="mt-8">
+      {/* <Card className="mt-8">
         <CardContent className="p-6">
           <h2 className="mb-4 text-lg font-semibold">Recent Recipients</h2>
           <div className="flex space-x-4 overflow-x-auto pb-2">
@@ -121,23 +122,23 @@ export default function SendMoneyPage() {
             ))}
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   );
 }
 
-export interface UserType {
-  name: string | null;
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  email: string;
-  username: string;
-  password: string | null;
-  phoneNum: string | null;
-  is_admin: "USER" | "ADMIN";
-  wallet_id: string | null;
-}
+// export interface UserType {
+//   name: string | null;
+//   id: string;
+//   createdAt: Date;
+//   updatedAt: Date;
+//   email: string;
+//   username: string;
+//   password: string | null;
+//   phoneNum: string | null;
+//   is_admin: "USER" | "ADMIN";
+//   wallet_id: string | null;
+// }
 
 // const users: UserType[] = [
 //   {
@@ -184,31 +185,31 @@ export interface UserType {
 //   },
 // ]
 
-const recentRecipients = [
-  {
-    id: 2,
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-  {
-    id: 3,
-    name: "Mike Johnson",
-    email: "mike.johnson@example.com",
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-  {
-    id: 5,
-    name: "David Brown",
-    email: "david.brown@example.com",
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john.doe@example.com",
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-];
+// const recentRecipients = [
+//   {
+//     id: 2,
+//     name: "Jane Smith",
+//     email: "jane.smith@example.com",
+//     avatar: "/placeholder.svg?height=40&width=40",
+//   },
+//   {
+//     id: 3,
+//     name: "Mike Johnson",
+//     email: "mike.johnson@example.com",
+//     avatar: "/placeholder.svg?height=40&width=40",
+//   },
+//   {
+//     id: 5,
+//     name: "David Brown",
+//     email: "david.brown@example.com",
+//     avatar: "/placeholder.svg?height=40&width=40",
+//   },
+//   {
+//     id: 1,
+//     name: "John Doe",
+//     email: "john.doe@example.com",
+//     avatar: "/placeholder.svg?height=40&width=40",
+//   },
+// ];
 
-// Removed the local useEffect declaration to avoid conflict with the imported useEffect
+// // Removed the local useEffect declaration to avoid conflict with the imported useEffect

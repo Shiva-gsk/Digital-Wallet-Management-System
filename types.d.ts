@@ -1,22 +1,37 @@
 export interface UserType {
-    name: string | null;
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    email: string;
-    username: string;
-    password: string | null;
-    phoneNum: string | null;
-    is_admin: "USER" | "ADMIN";
-    wallet_id: string | null;
-  }
+  name: string | null;
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  email: string;
+  username: string;
+  password: number | null;
+  phoneNum: string | null;
+  is_admin: "USER" | "ADMIN";
+  wallet_id: string | null;
+}
 
 export interface MoneyRequest {
-  id:string;
-  status: "pending" | "completed" | "declined";
+  id: string;
   amount: number;
-  desc: string;
-  sender_id: string;
-  receiver_id: string;
   request_date: Date;
+  status: string;
+  receiver_id: string;
+  sender_id: string;
+  desc: string | null;
+  sender?: { name: string | null; email: string };
+  receiver?: { name: string | null; email: string };
+}
+
+export interface Transactions {
+  id: string;
+  amount: number;
+  status: string;
+  receiver_id: string;
+  sender_id: string;
+  transaction_date: Date;
+  desc: string | null;
+  type: string;
+  sender?: { username: string | null; email: string };
+  receiver?: { username: string | null; email: string };
 }

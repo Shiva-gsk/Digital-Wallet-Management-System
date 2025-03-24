@@ -95,7 +95,9 @@ export function PinInput({ length, onComplete }: PinInputProps) {
           onChange={(e) => handleChange(index, e.target.value)}
           onKeyDown={(e) => handleKeyDown(index, e)}
           onPaste={handlePaste}
-          ref={(el) => (inputRefs.current[index] = el)}
+          ref={(el) => {
+            inputRefs.current[index] = el;
+          }}
           className="h-12 w-12 text-center text-xl"
         />
       ))}

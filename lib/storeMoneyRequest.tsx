@@ -20,3 +20,4 @@ export const storeMoneyRequest = async(senderId: string, receiverId:string, amou
         return false;
     }
 }
+

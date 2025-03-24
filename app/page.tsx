@@ -1,14 +1,20 @@
 "use client";
-import { useEffect } from "react";
-import { syncUsers } from "@/app/actions/syncUsers";
-import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
+// import { useEffect } from "react";
+// import { syncUsers } from "@/app/actions/syncUsers";
+import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link";
-import { Wallet, SendHorizonal, FileText } from "lucide-react"
+import { Wallet, SendHorizonal, FileText, Loader2 } from "lucide-react"
 import Header from "@/components/Navbar";
+import { useEffect, useState, useTransition } from "react";
+import { getTransactions } from "@/lib/getTransactions";
+import { Transactions } from "@/types";
+
 export default function Home() {
-  const { isSignedIn } = useUser();
+  const [recentTransactions, setRecentTransactions] = useState<Transactions[]>([]);
+  const [isPending, startTransition] = useTransition();
+  const { user } = useUser();
   // useEffect(() => {
   //   const fetchData = async () => {
   //     if (isSignedIn) {
@@ -17,6 +23,24 @@ export default function Home() {
   //   };
   //   fetchData();
   // }, [isSignedIn]); // Dependency added to prevent unnecessary calls
+
+  useEffect(() => {
+    startTransition(()=>{
+        if(user){
+        
+        getTransactions(user.id).then((transactions) => {
+          const updated : Transactions[]  = transactions.map(transaction =>({
+            ...transaction,
+            type: transaction.sender_id === user.id ? "sent" : "received",
+          }));
+          setRecentTransactions(updated);
+      })}
+      else{
+        setRecentTransactions([]);
+      }
+      })
+  }, [user]); // Dependency added to prevent unnecessary calls
+
   return (
     <main>
         <Header/>
@@ -113,8 +137,9 @@ export default function Home() {
           </Card>
         </Link>
       </div>
-
-      <div className="mt-12">
+        {isPending?<div className="pt-7 flex justify-center items-center h-full">
+              <Loader2 className="animate-spin" size={48} color="#4F46E5" />
+            </div>: <div className="mt-12">
         <h2 className="mb-4 text-2xl font-semibold">Recent Transactions</h2>
         <Card>
           <CardContent className="p-6">
@@ -132,8 +157,8 @@ export default function Home() {
                       )}
                     </div>
                     <div>
-                      <p className="font-medium">{transaction.user}</p>
-                      <p className="text-sm text-muted-foreground">{transaction.date}</p>
+                      <p className="font-medium">{(transaction.sender)&&(transaction?.sender.username) && transaction.sender?.username?.charAt(0).toUpperCase() + transaction.sender?.username?.slice(1).toLowerCase()}</p>
+                      <p className="text-sm text-muted-foreground">{transaction.transaction_date.toLocaleString()}</p>
                     </div>
                   </div>
                   <p
@@ -151,6 +176,7 @@ export default function Home() {
           </CardContent>
         </Card>
       </div>
+            }
     </div>
   </SignedIn>
     </main>
@@ -159,26 +185,26 @@ export default function Home() {
 
 
 
-const recentTransactions = [
-  {
-    id: 1,
-    user: "John Doe",
-    amount: "25.00",
-    type: "sent",
-    date: "Today, 2:30 PM",
-  },
-  {
-    id: 2,
-    user: "Jane Smith",
-    amount: "42.50",
-    type: "received",
-    date: "Yesterday, 11:15 AM",
-  },
-  {
-    id: 3,
-    user: "Mike Johnson",
-    amount: "10.75",
-    type: "sent",
-    date: "Mar 14, 9:20 AM",
-  },
-]
+// const recentTransactions = [
+//   {
+//     id: 1,
+//     user: "John Doe",
+//     amount: "25.00",
+//     type: "sent",
+//     date: "Today, 2:30 PM",
+//   },
+//   {
+//     id: 2,
+//     user: "Jane Smith",
+//     amount: "42.50",
+//     type: "received",
+//     date: "Yesterday, 11:15 AM",
+//   },
+//   {
+//     id: 3,
+//     user: "Mike Johnson",
+//     amount: "10.75",
+//     type: "sent",
+//     date: "Mar 14, 9:20 AM",
+//   },
+// ]

@@ -1,8 +1,8 @@
 "use client"
 
-import type { UserType } from "@/app/send-money/page"
+import type { UserType } from "@/types"
 import { Card, CardContent } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 
 interface UserListProps {
@@ -19,8 +19,8 @@ export function UserList({ users, onSendMoney }: UserListProps) {
           <CardContent className="flex items-center justify-between p-4">
             <div className="flex items-center">
               <Avatar className="mr-4 h-10 w-10">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                {/* <AvatarImage src={(user.avatar)} alt={user.name} /> */}
+                <AvatarFallback>{(user.name)?user.name:"-".charAt(0)}</AvatarFallback>
               </Avatar>
               <div>
                 <p className="font-medium">{user.name}</p>

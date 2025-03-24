@@ -8,13 +8,13 @@ export async function POST(req:Request){
         const payload: WebhookEvent = await req.json();
         console.log("User created", payload.data);
         if (payload.type === "user.created") {
-            const { id, email_addresses, first_name} = payload.data;
+            const { id, email_addresses, first_name, username} = payload.data;
             await db.user.create({
                 data: {
                   id, // Clerk's user ID
                   email: email_addresses[0].email_address,
                   name: first_name,
-                  
+                  username:(username)?username:""
                 },
               });
             return NextResponse.json({ message: "User added to database" }, { status: 201 });

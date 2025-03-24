@@ -2,7 +2,7 @@
 import { db } from "./db";
 import { fetchWalletbyUser } from "./getWallet";
 
-export const sendMoneyById = async(senderId: string, receiverId:string, amount:number) => {
+export const sendMoneyById = async(senderId: string, receiverId:string, amount:number, desc:string) => {
     const sender = await fetchWalletbyUser(senderId);
     const receiver = await fetchWalletbyUser(receiverId);
 
@@ -43,6 +43,7 @@ export const sendMoneyById = async(senderId: string, receiverId:string, amount:n
             data: {
                 status: "failed",
                 amount,
+                desc,
                 sender: {connect: {id: senderId}},
                 receiver: {connect: {id: receiverId}}
             }

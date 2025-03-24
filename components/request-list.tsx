@@ -1,17 +1,21 @@
 import { Check, X } from "lucide-react"
-import type { MoneyRequest } from "@/app/money-request/page"
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { useEffect } from "react"
+import { MoneyRequest } from "@/types"
+import { acceptMoneyRequest, cancelMoneyRequest } from "@/lib/requestButtonActions"
+
 
 interface RequestListProps {
   requests: MoneyRequest[]
-  type: "received" | "sent" | "completed"
+  type: "received" | "sent"
+  flag: boolean,
+  setFlag: (value: boolean) => void;
 }
 
-export function RequestList({ requests, type }: RequestListProps) {
+export function RequestList({ requests, type, flag, setFlag }: RequestListProps) {
+
   if (requests.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
@@ -31,8 +35,25 @@ export function RequestList({ requests, type }: RequestListProps) {
   //   console.log();
   // }, [requests]);
 
-  function handleCancel(event: React.MouseEvent<HTMLButtonElement>): void {
-    console.log("Cancel request");
+  function handleCancel(request_id:string): void {
+    cancelMoneyRequest(request_id).then((res) => {
+      if(res){
+        console.log("Request Cancelled");
+        setFlag(!flag);
+      }
+      else{
+        console.log("Request Cancel Failed");
+      }
+    }).catch((e) => {
+      console.log(e);});
+  }
+  function handlePay(request_id:string, sender_id:string, receiver_id:string, amount: number): void {
+    acceptMoneyRequest(request_id, sender_id, receiver_id, amount).then((res) => {
+      if(res){
+        console.log("Request Cancelled");
+        setFlag(!flag);
+      }
+    });
   }
 
   return (
@@ -62,22 +83,22 @@ export function RequestList({ requests, type }: RequestListProps) {
                     Completed
                   </Badge>
                 ) : (
-                  <Badge variant="outline" className="bg-red-50 text-red-700">
+                  <Badge  variant="outline" className="bg-red-50 text-red-700">
                     Declined
                   </Badge>
                 )}
               </div>
             </div>
 
-            <p className="mt-2 text-sm">{request.reason}</p>
+            <p className="mt-2 text-sm px-2">{request.desc}</p>
 
             {type === "received" && request.status === "pending" && (
               <div className="mt-4 flex justify-end space-x-2">
-                <Button variant="outline" size="sm">
+                <Button onClick={()=>{handleCancel(request.id)}}  variant="outline" size="sm">
                   <X className="mr-1 h-4 w-4" />
                   Decline
                 </Button>
-                <Button size="sm">
+                <Button size="sm" onClick={()=>{handlePay(request.id, request.sender_id, request.receiver_id, request.amount)}}>
                   <Check className="mr-1 h-4 w-4" />
                   Pay
                 </Button>
@@ -86,7 +107,7 @@ export function RequestList({ requests, type }: RequestListProps) {
 
             {type === "sent" && request.status === "pending" && (
               <div className="mt-4 flex justify-end">
-                <Button variant="outline" size="sm" onClick={handleCancel}>
+                <Button variant="outline" size="sm" onClick={()=>handleCancel(request.id)}>
                   Cancel Request
                 </Button>
               </div>

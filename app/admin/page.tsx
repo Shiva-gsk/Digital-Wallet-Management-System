@@ -1,8 +1,7 @@
 import React from 'react'
 
-type Props = {}
 
-const Page = (props: Props) => {
+export default function Page(){
   return (
     <div>
       <h1>Admin Page</h1>

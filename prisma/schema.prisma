@@ -36,7 +36,7 @@ model User {
   email       String   @unique
   username    String   @unique
   name        String?
-  password    String?
+  password    Int?
   phoneNum    String?
   is_admin    Role     @default(USER)
   createdAt   DateTime @default(now())
