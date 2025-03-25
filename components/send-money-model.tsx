@@ -15,6 +15,7 @@ import { fetchWalletbyUser } from "@/lib/getWallet"
 import { useUser } from "@clerk/nextjs"
 import { sendMoneyById } from "@/lib/sendMoney"
 import { Textarea } from "./ui/textarea"
+import { fetchUserbyEmail } from "@/lib/getUser"
 
 interface SendMoneyModalProps {
   user: UserType
@@ -30,9 +31,15 @@ export function SendMoneyModal({ user, onClose }: SendMoneyModalProps) {
   const [money, setMoney] = useState(0);
   const [receiver, setReceiver] = useState("");
   const { user: clerkUser, isLoaded } = useUser();
+  const [userPin, setUserPin] = useState(0);
 
   useEffect(()=>{
     if(isLoaded && clerkUser){
+      fetchUserbyEmail(clerkUser.emailAddresses[0].emailAddress).then((data)=>{
+        if(data && data.password){
+          setUserPin(data.password);
+        }
+      })
       // console.log(clerkUser);
       fetchWalletbyUser(clerkUser.id).then((data) => {
         if (data) {
@@ -44,6 +51,7 @@ export function SendMoneyModal({ user, onClose }: SendMoneyModalProps) {
   }, [isLoaded, user, balance, clerkUser])
 
   const handleAmountSubmit = (e: React.FormEvent, id: string) => {
+    
     e.preventDefault()
     if(Number(amount) > balance){
       setError("Insufficient balance. Your balance is " + balance);
@@ -62,6 +70,16 @@ export function SendMoneyModal({ user, onClose }: SendMoneyModalProps) {
   }
 
   const handlePinSubmit = (pin: string) => {
+    if(!clerkUser){
+      alert("Someting went Wrong! Try Later");
+      return;
+    } 
+    // In a real app, you would verify the PIN against the stored value
+    if (Number(pin) !== userPin) {
+      alert("Incorrect PIN. Please try again.");
+      return;
+    }
+    
     // In a real app, you would verify the PIN against the stored value
     console.log(pin);
     setStep("processing")

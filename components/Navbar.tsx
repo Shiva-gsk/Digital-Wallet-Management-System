@@ -76,10 +76,10 @@ export default function Header() {
 
         {/* Auth Buttons (Desktop) */}
         {user?<UserButton/>:<div className="hidden md:flex space-x-2">
-          <Link href="/login">
+          <Link href="/signIn">
             <Button variant="ghost">Log In</Button>
           </Link>
-          <Link href="/signup">
+          <Link href="/signUp">
             <Button>Sign Up</Button>
           </Link>
         </div>}
@@ -113,7 +113,7 @@ export default function Header() {
           Pricing
         </Link>
         {/* Auth Buttons (Mobile) */}
-        {user?<>
+        {/* {user?<>
           <Link href="/dashboard" className="w-full">
             <Button variant="ghost" className="w-full">Dashboard</Button>
           </Link>
@@ -128,7 +128,7 @@ export default function Header() {
             <Button className="w-full">Sign Up</Button>
           </Link>
           </>
-        }
+        } */}
         </div>
         
 

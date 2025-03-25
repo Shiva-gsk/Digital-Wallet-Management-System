@@ -1,66 +1,76 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { ArrowLeft, Eye, EyeOff } from "lucide-react"
-import Link from "next/link"
+import { useEffect, useState, useTransition } from "react";
+import { ArrowDownUp, ArrowLeft, Clock, Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PinInput } from "@/components/pin-input"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PinInput } from "@/components/pin-input";
 import { useUser } from "@clerk/nextjs";
-import { fetchWalletbyUser } from "@/lib/getWallet"
-import { UserType } from "@/types"
-import { fetchUserbyId } from "@/lib/getUser"
-import { WalletButton } from "@/components/walletButton"
+import { fetchWalletbyUser } from "@/lib/getWallet";
+import { UserType } from "@/types";
+import { fetchUserbyId } from "@/lib/getUser";
+import { DepositButton } from "@/components/depositButton";
+import { WithdrawButton } from "@/components/withdrawButton";
+import LoadingWidget from "@/components/LoadingWidget";
+import { SetPassword } from "@/components/setPassword";
 export default function WalletPage() {
-  const [showBalance, setShowBalance] = useState(false)
-  const [pinVerified, setPinVerified] = useState(false)
-  const [showPinInput, setShowPinInput] = useState(false)
+  const [showBalance, setShowBalance] = useState(false);
+  const [pinVerified, setPinVerified] = useState(false);
+  const [showPinInput, setShowPinInput] = useState(false);
   const [balance, setBalance] = useState(0);
   const [currentUser, setCurrentUser] = useState<UserType>();
+  const [isPending, startTransition] = useTransition();
+  const [updatedAt, setUpdatedAt] = useState("");
+  const [flag, setFlag] = useState(false);
+
   const handleVerifyPin = (pin: string) => {
-    if(!currentUser){
+    if (!currentUser) {
       alert("Someting went Wrong! Try Later");
       return;
-    } 
+    }
     // In a real app, you would verify the PIN against the stored value
     if (Number(pin) === currentUser?.password) {
-      setPinVerified(true)
-      setShowBalance(true)
-      setShowPinInput(false)
+      setPinVerified(true);
+      setShowBalance(true);
+      setShowPinInput(false);
     } else {
-      alert("Incorrect PIN. Please try again.")
+      alert("Incorrect PIN. Please try again.");
     }
-  }
+  };
 
   const toggleBalanceVisibility = () => {
     if (showBalance) {
-      setShowBalance(false)
+      setShowBalance(false);
     } else {
       if (pinVerified) {
-        setShowBalance(true)
+        setShowBalance(true);
       } else {
-        setShowPinInput(true)
+        setShowPinInput(true);
       }
     }
-  }
+  };
   const { user, isLoaded } = useUser();
 
-  useEffect(()=>{
-    if(isLoaded && user){
-      // console.log(user);
-      fetchUserbyId(user.id).then((data)=>{
-        if(data) setCurrentUser(data);
-      })
-      fetchWalletbyUser(user.id).then((data) => {
-        if (data) {
-          setBalance(data.balance)
-        }
-      });
-      // console.log(balance);
-    }
-  }, [isLoaded, user, balance])
+  useEffect(() => {
+    startTransition(() => {
+      if (isLoaded && user) {
+        // console.log(user);
+        fetchUserbyId(user.id).then((data) => {
+          if (data) setCurrentUser(data);
+        });
+        fetchWalletbyUser(user.id).then((data) => {
+          if (data) {
+            setBalance(data.balance);
+            setUpdatedAt(data.updatedAt.toDateString());
+          }
+        });
+        // console.log(balance);
+      }
+    });
+  }, [isLoaded, user, balance, flag]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -71,14 +81,9 @@ export default function WalletPage() {
           </Button>
         </Link>
         <div className="flex justify-between w-full">
+          <h1 className="text-2xl font-bold">My Wallet</h1>
 
-        <h1 className="text-2xl font-bold">My Wallet</h1>
-    
-        <WalletButton >
-          Set Password
-        </WalletButton>
-
-        
+          <SetPassword setFlag={setFlag} flag={flag}>Set Password</SetPassword>
         </div>
       </div>
 
@@ -91,34 +96,44 @@ export default function WalletPage() {
             onClick={toggleBalanceVisibility}
             aria-label={showBalance ? "Hide balance" : "Show balance"}
           >
-            {showBalance ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+            {showBalance ? (
+              <EyeOff className="h-5 w-5" />
+            ) : (
+              <Eye className="h-5 w-5" />
+            )}
           </Button>
         </CardHeader>
-        <CardContent>
-          {showPinInput ? (
-            <div className="py-4">
-              <p className="mb-4 text-center text-sm text-muted-foreground">Enter your PIN to view balance</p>
-              <PinInput length={4} onComplete={handleVerifyPin} />
-            </div>
-          ) : (
-            <div className="py-4">
-              <h2 className="text-3xl font-bold">{showBalance ? balance : "••••••"}</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Last updated: Today, 10:45 AM</p>
-            </div>
-          )}
-        </CardContent>
+        {isPending ? (
+          <LoadingWidget />
+        ) : (
+          <CardContent>
+            {showPinInput ? (
+              <div className="py-4">
+                <p className="mb-4 text-center text-sm text-muted-foreground">
+                  Enter your PIN to view balance
+                </p>
+                <PinInput length={4} onComplete={handleVerifyPin} />
+              </div>
+            ) : (
+              <div className="py-4">
+                <h2 className="text-3xl font-bold">
+                  {showBalance ? balance : "••••••"}
+                </h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Last updated: {updatedAt}
+                </p>
+              </div>
+            )}
+          </CardContent>
+        )}
       </Card>
-    <div className="w-full justify-around flex pb-4">
-      {/* <Button className="h-10 w-[35%] cursor-pointer" >Deposit</Button>
-      <Button className="h-10 w-[35%] cursor-pointer" >Withdraw</Button> */}
-      <WalletButton >
-        Deposit
-      </WalletButton>
-      <WalletButton>
-        Withdraw
-      </WalletButton>
-    </div>
-      {/* <Tabs defaultValue="transactions" className="w-full">
+      <div className="w-full justify-around flex pb-4">
+        {/* <Button className="h-10 w-[35%] cursor-pointer" >Deposit</Button>
+          <Button className="h-10 w-[35%] cursor-pointer" >Withdraw</Button> */}
+        <DepositButton setFlag={setFlag} flag={flag}>Deposit</DepositButton>
+        <WithdrawButton setFlag={setFlag} flag={flag}>Withdraw</WithdrawButton>
+      </div>
+      <Tabs defaultValue="transactions" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="transactions">Transactions</TabsTrigger>
           <TabsTrigger value="cards">Cards</TabsTrigger>
@@ -130,7 +145,11 @@ export default function WalletPage() {
                 <CardContent className="flex items-center justify-between p-4">
                   <div className="flex items-center">
                     <div
-                      className={`mr-4 rounded-full p-2 ${transaction.type === "received" ? "bg-green-100" : "bg-blue-100"}`}
+                      className={`mr-4 rounded-full p-2 ${
+                        transaction.type === "received"
+                          ? "bg-green-100"
+                          : "bg-blue-100"
+                      }`}
                     >
                       {transaction.type === "received" ? (
                         <ArrowDownUp className="h-5 w-5 text-green-600" />
@@ -147,9 +166,14 @@ export default function WalletPage() {
                     </div>
                   </div>
                   <p
-                    className={`font-semibold ${transaction.type === "received" ? "text-green-600" : "text-blue-600"}`}
+                    className={`font-semibold ${
+                      transaction.type === "received"
+                        ? "text-green-600"
+                        : "text-blue-600"
+                    }`}
                   >
-                    {transaction.type === "received" ? "+" : "-"}${transaction.amount}
+                    {transaction.type === "received" ? "+" : "-"}$
+                    {transaction.amount}
                   </p>
                 </CardContent>
               </Card>
@@ -167,11 +191,15 @@ export default function WalletPage() {
                   </div>
                   <div className="text-right">
                     <p className="text-xs opacity-80">Balance</p>
-                    <p className="font-semibold">{showBalance ? "$1,250.75" : "••••••"}</p>
+                    <p className="font-semibold">
+                      {showBalance ? "$1,250.75" : "••••••"}
+                    </p>
                   </div>
                 </div>
                 <p className="mb-1 text-xs opacity-80">Card Number</p>
-                <p className="mb-4 font-mono text-lg font-medium">•••• •••• •••• 4589</p>
+                <p className="mb-4 font-mono text-lg font-medium">
+                  •••• •••• •••• 4589
+                </p>
                 <div className="flex justify-between">
                   <div>
                     <p className="text-xs opacity-80">Card Holder</p>
@@ -192,46 +220,45 @@ export default function WalletPage() {
             </CardContent>
           </Card>
         </TabsContent>
-      </Tabs> */}
+      </Tabs>
     </div>
-  )
+  );
 }
 
-// const transactions = [
-//   {
-//     id: 1,
-//     description: "Payment to John Doe",
-//     amount: "25.00",
-//     type: "sent",
-//     date: "Today, 2:30 PM",
-//   },
-//   {
-//     id: 2,
-//     description: "Received from Jane Smith",
-//     amount: "42.50",
-//     type: "received",
-//     date: "Yesterday, 11:15 AM",
-//   },
-//   {
-//     id: 3,
-//     description: "Coffee Shop",
-//     amount: "5.75",
-//     type: "sent",
-//     date: "Mar 14, 9:20 AM",
-//   },
-//   {
-//     id: 4,
-//     description: "Salary Deposit",
-//     amount: "1,200.00",
-//     type: "received",
-//     date: "Mar 10, 8:00 AM",
-//   },
-//   {
-//     id: 5,
-//     description: "Grocery Store",
-//     amount: "65.30",
-//     type: "sent",
-//     date: "Mar 8, 5:45 PM",
-//   },
-// ]
-
+const transactions = [
+  {
+    id: 1,
+    description: "Payment to John Doe",
+    amount: "25.00",
+    type: "sent",
+    date: "Today, 2:30 PM",
+  },
+  {
+    id: 2,
+    description: "Received from Jane Smith",
+    amount: "42.50",
+    type: "received",
+    date: "Yesterday, 11:15 AM",
+  },
+  {
+    id: 3,
+    description: "Coffee Shop",
+    amount: "5.75",
+    type: "sent",
+    date: "Mar 14, 9:20 AM",
+  },
+  {
+    id: 4,
+    description: "Salary Deposit",
+    amount: "1,200.00",
+    type: "received",
+    date: "Mar 10, 8:00 AM",
+  },
+  {
+    id: 5,
+    description: "Grocery Store",
+    amount: "65.30",
+    type: "sent",
+    date: "Mar 8, 5:45 PM",
+  },
+];

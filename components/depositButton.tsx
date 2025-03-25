@@ -15,9 +15,11 @@ import { depositMoney } from "@/lib/depositMoney";
 
 interface Props {
   children: React.ReactNode;
+  flag: boolean;
+  setFlag: (flag: boolean) => void;
 }
 
-export function WalletButton({ children }: Props) {
+export function DepositButton({ children, setFlag, flag }: Props) {
   const [isPending, startTransition] = useTransition();
   const [amount, setAmount] = useState("");
   const [success, setSuccess] = useState("");
@@ -34,6 +36,7 @@ export function WalletButton({ children }: Props) {
           if (data) {
             setSuccess("Money Deposited Successfully");
             setStep("success");
+            setFlag(!flag);
           } else {
             setError("Money Deposited Successfully");
             setStep("error");
@@ -43,8 +46,15 @@ export function WalletButton({ children }: Props) {
     });
   }
 
+  const handleDialogClose = () => {
+    setAmount("");
+    setSuccess("");
+    setError("");
+    setStep("amount");
+  };
+
   return (
-    <Dialog>
+    <Dialog onOpenChange={handleDialogClose}>
       <DialogTrigger asChild>
         <Button className="h-10 w-[35%] cursor-pointer">{children}</Button>
       </DialogTrigger>
