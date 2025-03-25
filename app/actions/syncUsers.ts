@@ -67,6 +67,7 @@ export const syncUsers = async () => {
           username: user.username || "",
           phoneNum: user.phoneNumbers[0]?.phoneNumber || "",
           wallet_id: walletId,
+          password: 1234,
         },
       });
     }

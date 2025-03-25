@@ -1,6 +1,5 @@
 "use client";
 // import { useEffect } from "react";
-// import { syncUsers } from "@/app/actions/syncUsers";
 import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -10,19 +9,20 @@ import Header from "@/components/Navbar";
 import { useEffect, useState, useTransition } from "react";
 import { getTransactions } from "@/lib/getTransactions";
 import { Transactions } from "@/types";
+import { syncUsers } from "./actions/syncUsers";
 
 export default function Home() {
   const [recentTransactions, setRecentTransactions] = useState<Transactions[]>([]);
   const [isPending, startTransition] = useTransition();
-  const { user } = useUser();
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     if (isSignedIn) {
-  //       await syncUsers(); // Call only when user is signed in
-  //     }
-  //   };
-  //   fetchData();
-  // }, [isSignedIn]); // Dependency added to prevent unnecessary calls
+  const { user, isSignedIn } = useUser();
+  useEffect(() => {
+    const fetchData = async () => {
+      if (isSignedIn) {
+        await syncUsers(); // Call only when user is signed in
+      }
+    };
+    fetchData();
+  }, [isSignedIn]); // Dependency added to prevent unnecessary calls
 
   useEffect(() => {
     startTransition(()=>{

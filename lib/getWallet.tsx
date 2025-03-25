@@ -25,6 +25,30 @@ export const fetchWalletbyUser = async (id: string) => {
         return null;
     }
 };
+export const fetchWalletbyUserEmail = async (email: string) => {
+    try{
+        const user = await db.user.findFirst({
+            where:{
+                email
+            },
+            select:{wallet_id: true}
+        });
+        if(!user || !user.wallet_id){
+            return null;
+        }
+        const wallet = await db.wallet.findFirst({
+            where:{
+                id: user?.wallet_id
+            }
+        });
+        
+        return wallet;
+    }
+    
+    catch{
+        return null;
+    }
+};
 
 export const fetchWalletbyUserRaw = async (id: string) => {
     try{

@@ -1,12 +1,12 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { ArrowLeft, Eye, EyeOff, Clock, ArrowDownUp } from "lucide-react"
+import { ArrowLeft, Eye, EyeOff } from "lucide-react"
 import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { PinInput } from "@/components/pin-input"
 import { useUser } from "@clerk/nextjs";
 import { fetchWalletbyUser } from "@/lib/getWallet"
@@ -74,7 +74,7 @@ export default function WalletPage() {
 
         <h1 className="text-2xl font-bold">My Wallet</h1>
     
-        <WalletButton>
+        <WalletButton >
           Set Password
         </WalletButton>
 
@@ -111,14 +111,14 @@ export default function WalletPage() {
     <div className="w-full justify-around flex pb-4">
       {/* <Button className="h-10 w-[35%] cursor-pointer" >Deposit</Button>
       <Button className="h-10 w-[35%] cursor-pointer" >Withdraw</Button> */}
-      <WalletButton>
+      <WalletButton >
         Deposit
       </WalletButton>
       <WalletButton>
         Withdraw
       </WalletButton>
     </div>
-      <Tabs defaultValue="transactions" className="w-full">
+      {/* <Tabs defaultValue="transactions" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="transactions">Transactions</TabsTrigger>
           <TabsTrigger value="cards">Cards</TabsTrigger>
@@ -192,46 +192,46 @@ export default function WalletPage() {
             </CardContent>
           </Card>
         </TabsContent>
-      </Tabs>
+      </Tabs> */}
     </div>
   )
 }
 
-const transactions = [
-  {
-    id: 1,
-    description: "Payment to John Doe",
-    amount: "25.00",
-    type: "sent",
-    date: "Today, 2:30 PM",
-  },
-  {
-    id: 2,
-    description: "Received from Jane Smith",
-    amount: "42.50",
-    type: "received",
-    date: "Yesterday, 11:15 AM",
-  },
-  {
-    id: 3,
-    description: "Coffee Shop",
-    amount: "5.75",
-    type: "sent",
-    date: "Mar 14, 9:20 AM",
-  },
-  {
-    id: 4,
-    description: "Salary Deposit",
-    amount: "1,200.00",
-    type: "received",
-    date: "Mar 10, 8:00 AM",
-  },
-  {
-    id: 5,
-    description: "Grocery Store",
-    amount: "65.30",
-    type: "sent",
-    date: "Mar 8, 5:45 PM",
-  },
-]
+// const transactions = [
+//   {
+//     id: 1,
+//     description: "Payment to John Doe",
+//     amount: "25.00",
+//     type: "sent",
+//     date: "Today, 2:30 PM",
+//   },
+//   {
+//     id: 2,
+//     description: "Received from Jane Smith",
+//     amount: "42.50",
+//     type: "received",
+//     date: "Yesterday, 11:15 AM",
+//   },
+//   {
+//     id: 3,
+//     description: "Coffee Shop",
+//     amount: "5.75",
+//     type: "sent",
+//     date: "Mar 14, 9:20 AM",
+//   },
+//   {
+//     id: 4,
+//     description: "Salary Deposit",
+//     amount: "1,200.00",
+//     type: "received",
+//     date: "Mar 10, 8:00 AM",
+//   },
+//   {
+//     id: 5,
+//     description: "Grocery Store",
+//     amount: "65.30",
+//     type: "sent",
+//     date: "Mar 8, 5:45 PM",
+//   },
+// ]
 
