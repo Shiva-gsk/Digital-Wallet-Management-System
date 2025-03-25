@@ -21,7 +21,7 @@ interface Props {
 }
 
 export function SetPassword({ children, setFlag, flag }: Props) {
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const [step, setStep] = useState("pin");
