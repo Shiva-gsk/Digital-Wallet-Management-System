@@ -3,7 +3,7 @@
 import { useEffect, useState, useTransition } from "react";
 import { ArrowDownUp, ArrowLeft, Clock, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
-
+import {toast} from "sonner"
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -28,7 +28,10 @@ export default function WalletPage() {
 
   const handleVerifyPin = (pin: string) => {
     if (!currentUser) {
-      alert("Someting went Wrong! Try Later");
+      toast.error("Something went Wrong!", {
+        style: { color: "red" },
+      });
+      
       return;
     }
     // In a real app, you would verify the PIN against the stored value
@@ -37,7 +40,11 @@ export default function WalletPage() {
       setShowBalance(true);
       setShowPinInput(false);
     } else {
-      alert("Incorrect PIN. Please try again.");
+      // alert("Incorrect PIN. Please try again.");
+      toast.error("Incorrect PIN. Please try again.", {
+        style: { color: "red" },
+        description: "Can't verify PIN",
+      });
     }
   };
 

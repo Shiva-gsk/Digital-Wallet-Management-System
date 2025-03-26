@@ -180,3 +180,14 @@
 }
 
 
+.sonner-toast {
+  @apply bg-indigo-500 text-white font-bold shadow-md;
+}
+
+.sonner-toast-error {
+  @apply bg-red-500 text-white;
+}
+
+.sonner-toast-success {
+  @apply bg-green-500 text-white;
+}
