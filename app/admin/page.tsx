@@ -1,10 +1,17 @@
-import React from 'react'
 
+import { redirect } from "next/navigation"
+import { useUser } from "@clerk/nextjs";
+export default function AdminDashboard() {
+  
 
-export default function Page(){
+  const {user} = useUser();
+  // Check if user is not logged in or not an admin
+  
+
   return (
     <div>
-      <h1>Admin Page</h1>
+      <h1>Admin Dashboard</h1>
+      {/* Admin-only content */}
     </div>
   )
 }

@@ -46,8 +46,15 @@ export function WithdrawButton({ children, setFlag, flag }: Props) {
     });
   }
 
+  const handleDialogClose = () => {
+    setAmount("");
+    setSuccess("");
+    setError("");
+    setStep("amount");
+  };
+
   return (
-    <Dialog>
+    <Dialog onOpenChange={handleDialogClose}>
       <DialogTrigger asChild>
         <Button className="h-10 w-[35%] cursor-pointer">{children}</Button>
       </DialogTrigger>
