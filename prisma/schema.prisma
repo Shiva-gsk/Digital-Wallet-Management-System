@@ -19,43 +19,43 @@ enum Role {
 }
 
 model Wallet {
-  id                   String        @id @default(cuid())
-  balance              Float         @default(0)
-  createdAt            DateTime      @default(now())
-  updatedAt            DateTime      @updatedAt
-  isActive             Boolean       @default(true)
-  user                 User?
-  deposits          Deposit[]
-  withdrawals       Withdrawal[]
+  id          String       @id @default(cuid())
+  balance     Float        @default(0)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  isActive    Boolean      @default(true)
+  user        User?
+  deposits    Deposit[]
+  withdrawals Withdrawal[]
 }
 
 model User {
-  id          String   @id @default(cuid())
-  email       String   @unique
-  username    String   @unique
-  name        String?
-  password    Int?
-  phoneNum    String?
-  is_admin    Role     @default(USER)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                   String        @id @default(cuid())
+  email                String        @unique
+  username             String        @unique
+  name                 String?
+  password             Int?
+  phoneNum             String?
+  role                 Role          @default(USER)
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
   sentTransactions     Transaction[] @relation("SenderRelation")
   receivedTransactions Transaction[] @relation("ReceiverRelation")
-  wallet_id   String?  @unique
-  user_wallet Wallet?  @relation(fields: [wallet_id], references: [id])
+  wallet_id            String?       @unique
+  user_wallet          Wallet?       @relation(fields: [wallet_id], references: [id])
 
-  sentRequests MoneyRequest[] @relation("SentRequests")
+  sentRequests     MoneyRequest[] @relation("SentRequests")
   receivedRequests MoneyRequest[] @relation("ReceivedRequests")
-  activityLogs ActivityLog[]
-  notifications Notification[]
+  activityLogs     ActivityLog[]
+  notifications    Notification[]
 }
 
 model Transaction {
   id               String   @id @default(cuid())
   receiver_id      String
   sender_id        String
-  receiver         User   @relation(fields: [receiver_id], references: [id], name: "ReceiverRelation")
-  sender           User   @relation(fields: [sender_id], references: [id], name: "SenderRelation")
+  receiver         User     @relation(fields: [receiver_id], references: [id], name: "ReceiverRelation")
+  sender           User     @relation(fields: [sender_id], references: [id], name: "SenderRelation")
   status           String
   amount           Float
   transaction_date DateTime @default(now())
@@ -75,40 +75,40 @@ model MoneyRequest {
 }
 
 model Deposit {
-  id          String   @id @default(cuid())
-  walletId    String
-  wallet      Wallet   @relation(fields: [walletId], references: [id])
-  amount      Float
-  request_date DateTime @default(now())
+  id           String    @id @default(cuid())
+  walletId     String
+  wallet       Wallet    @relation(fields: [walletId], references: [id])
+  amount       Float
+  request_date DateTime  @default(now())
   process_date DateTime? @default(now())
-  status      String
+  status       String
 }
 
 model Withdrawal {
-  id          String   @id @default(cuid())
-  walletId    String
-  wallet      Wallet   @relation(fields: [walletId], references: [id])
-  amount      Float
-  request_date DateTime @default(now())
+  id           String    @id @default(cuid())
+  walletId     String
+  wallet       Wallet    @relation(fields: [walletId], references: [id])
+  amount       Float
+  request_date DateTime  @default(now())
   process_date DateTime?
-  status      String
+  status       String
 }
 
 model ActivityLog {
-  id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
   activity_type String
-  details     String?
-  timestamp   DateTime @default(now())
+  details       String?
+  timestamp     DateTime @default(now())
 }
 
 model Notification {
-  id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
-  type        String
-  message     String
-  is_read     Boolean @default(false)
-  createdAt   DateTime @default(now())
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  type      String
+  message   String
+  is_read   Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
