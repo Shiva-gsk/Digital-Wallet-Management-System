@@ -5,7 +5,7 @@ import { ArrowDownUp, ArrowLeft, Clock, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import {toast} from "sonner"
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card_ui";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PinInput } from "@/components/pin-input";
 import { useUser } from "@clerk/nextjs";

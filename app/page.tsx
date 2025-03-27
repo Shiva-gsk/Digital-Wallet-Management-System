@@ -1,7 +1,7 @@
 "use client";
 // import { useEffect } from "react";
 import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card_ui";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Wallet, SendHorizonal, FileText, Loader2 } from "lucide-react";

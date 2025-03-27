@@ -7,7 +7,7 @@ export interface UserType {
   username: string;
   password: number | null;
   phoneNum: string | null;
-  is_admin: "USER" | "ADMIN";
+  role: "USER" | "ADMIN";
   wallet_id: string | null;
 }
 

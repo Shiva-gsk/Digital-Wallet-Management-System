@@ -39,6 +39,7 @@ export function SetPassword({ children, setFlag, flag }: Props) {
           setStep("success");
           setFlag(!flag)
         } else {
+          
           setError(data.message);
           setStep("error");
         }

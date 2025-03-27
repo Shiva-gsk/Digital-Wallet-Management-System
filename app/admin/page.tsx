@@ -21,7 +21,7 @@ export default function AdminDashboard() {
         });
 
     })
-  }, [user]);
+  }, [router, user]);
 
   return (<>
     {(isPending)? <LoadingWidget/> :<div>
