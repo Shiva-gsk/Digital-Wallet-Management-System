@@ -52,3 +52,11 @@ export interface Transactions {
   sender?: { username: string | null; email: string };
   receiver?: { username: string | null; email: string };
 }
+
+
+export interface Stats{
+  userCount: number;
+  transactionCount: number;
+  totalMoney: number;
+  walletCount: number;
+}

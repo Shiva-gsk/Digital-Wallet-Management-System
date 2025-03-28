@@ -5,8 +5,8 @@ import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAx
 
 // Mock data for the chart
 const data = [
-  { day: "Mon", active: 120, new: 15 },
   { day: "Tue", active: 132, new: 23 },
+  { day: "Mon", active: 120, new: 15 },
   { day: "Wed", active: 101, new: 18 },
   { day: "Thu", active: 134, new: 24 },
   { day: "Fri", active: 190, new: 38 },

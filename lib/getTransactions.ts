@@ -68,3 +68,19 @@ export const getTransactionsById = async (id:string) =>{
     // console.log(transactions);
     return transactions;
 }
+
+export async function groupTransactionsByMonth() {
+    const transactions = await db.transaction.findMany();
+  
+    const grouped = transactions.reduce((acc, txn) => {
+      const month = txn.transaction_date.toDateString().slice(4, 8); // Extract YYYY-MM
+      if (!acc[month]) acc[month] = [];
+      acc[month].push(txn);
+      return acc;
+    }, {} as Record<string, typeof transactions>);
+  
+    return grouped;
+  }
+  
+  
+  
