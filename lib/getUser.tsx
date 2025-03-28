@@ -14,6 +14,7 @@ export const fetchUserbyName = async (name: string) => {
         return null;
     }
 };
+
 export const fetchUserbyEmail = async (email: string) => {
     try{
         const user = await db.user.findFirst({
@@ -43,7 +44,58 @@ export const fetchUserbyId = async (id: string) => {
 
 export const fetchAllUsers = async () => {
     try{
-        const user = await db.user.findMany();
+        const user = await db.user.findMany(
+            
+        );
+        return user;
+    }
+    catch{
+        console.log("error");
+        return null;
+    }
+};
+export const fetchAllUsersWithWallet = async () => {
+    try{
+        const user = await db.user.findMany(
+            {
+                include:{
+                    user_wallet:{
+                        select:{
+                            isActive: true,
+                            balance: true,
+                            updatedAt: true
+                        }
+                    }
+                }
+            }
+        );
+        // console.log(user)
+        return user;
+    }
+    catch{
+        console.log("error");
+        return null;
+    }
+};
+export const fetchUserWithWallet = async (id:string) => {
+    try{
+        const user = await db.user.findFirst(
+            {
+                where:{
+                    id
+                },
+                include:{
+                    user_wallet:{
+                        select:{
+                            isActive: true,
+                            balance: true,
+                            updatedAt: true
+                        }
+                    }
+                }
+            }
+        );
+        // console.log(user)
         return user;
     }
     catch{

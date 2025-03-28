@@ -1,11 +1,11 @@
 "use server";
 import { db } from "./db";
 
-export const getMoneyRequests = async (id: string) => {
+export const getMoneyRequests = async (email: string) => {
   try {
     const response = await db.user.findFirst({
       where: {
-        id,
+        email,
       },
       include: {
         sentRequests: {

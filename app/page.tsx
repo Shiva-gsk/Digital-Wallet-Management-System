@@ -31,10 +31,13 @@ export default function Home() {
   useEffect(() => {
     startTransition(() => {
       if (user) {
-        getTransactions(user.id).then((transactions) => {
+        getTransactions(user.emailAddresses[0].emailAddress).then((transactions) => {
+          if(transactions === null){
+            return;
+          }
           const updated: Transactions[] = transactions.map((transaction) => ({
             ...transaction,
-            type: transaction.sender_id === user.id ? "sent" : "received",
+            type: transaction.sender.email === user.emailAddresses[0].emailAddress ? "sent" : "received",
           }));
           setRecentTransactions(updated.reverse());
         });

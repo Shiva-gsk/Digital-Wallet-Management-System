@@ -22,10 +22,10 @@ export default function MoneyRequestPage() {
   const { user } = useUser();
   const [flag, setFlag] = useState(false);
   useEffect(() => {
-    if (!user?.id) return; // Ensure user is defined before making the call
+    if (!user) return; // Ensure user is defined before making the call
 
     startTransition(() => {
-      getMoneyRequests(user.id)
+      getMoneyRequests(user.emailAddresses[0].emailAddress)
         .then((data) => {
           if (data) {
             if(data.sentRequests) setSentRequests(data.sentRequests);

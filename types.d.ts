@@ -10,6 +10,23 @@ export interface UserType {
   role: "USER" | "ADMIN";
   wallet_id: string | null;
 }
+export interface UserTypeWithWallet {
+  name: string | null;
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  email: string;
+  username: string;
+  password: number | null;
+  phoneNum: string | null;
+  role: "USER" | "ADMIN";
+  wallet_id: string | null;
+  user_wallet:{
+    isActive: boolean;
+    balance: number;
+    updatedAt: Date;
+  } | null;
+}
 
 export interface MoneyRequest {
   id: string;

@@ -31,7 +31,7 @@ export default function SendMoneyPage() {
         .then((data) => {
           console.log(data);
           if (data && user) {
-            setUsers(data.filter((u) => u.id !== user.id));
+            setUsers(data.filter((u) => u.email !== user.emailAddresses[0].emailAddress));
           }
         });
     });

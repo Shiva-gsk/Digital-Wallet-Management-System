@@ -1,34 +1,29 @@
-"use client"
-import { useRouter } from 'next/navigation';
-import { useUser } from "@clerk/nextjs";
-import { useEffect, useTransition } from "react";
-import { fetchUserbyEmail } from "@/lib/getUser";
-import LoadingWidget from '@/components/LoadingWidget';
-export default function AdminDashboard() {
-  const router = useRouter();
-  const { user } = useUser();
-  const [isPending, startTransition] = useTransition();
-  // Check if user is not logged in or not an admin
-  useEffect(() => {
-    startTransition(()=>{
-      if (user)
-        fetchUserbyEmail(user.emailAddresses[0]?.emailAddress).then((data) => {
-          if (data) {
-            if (data.role !== "ADMIN") {
-              router.push("/");
-            }
-          }
-        });
+import { DashboardHeader } from "@/components/admin/dashboard-header"
+import { DashboardShell } from "@/components/admin/dashboard-shell"
+import { AnalyticsCards } from "@/components/admin/analytics-cards"
+import { TransactionChart } from "@/components/admin/transaction-chart"
+import { UserActivityChart } from "@/components/admin/user-activity-chart"
+import { TransactionTypeChart } from "@/components/admin/transaction-type-chart"
+import { RecentUsers } from "@/components/admin/recent-users"
 
-    })
-  }, [router, user]);
-
-  return (<>
-    {(isPending)? <LoadingWidget/> :<div>
-      <h1>Admin Dashboard</h1>
-      {/* Admin-only content */}
-    </div>
-    }
-    </>
-  );
+export default function DashboardPage() {
+  return (
+    <DashboardShell>
+      <DashboardHeader heading="Dashboard" text="Overview of your digital wallet management system." />
+      <AnalyticsCards />
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7 mt-6">
+        <div className="col-span-4">
+          <TransactionChart />
+        </div>
+        <div className="col-span-3">
+          <TransactionTypeChart />
+        </div>
+      </div>
+      <div className="grid gap-6 md:grid-cols-2 mt-6">
+        <UserActivityChart />
+        <RecentUsers />
+      </div>
+    </DashboardShell>
+  )
 }
+
