@@ -58,7 +58,7 @@ export function TransactionHistory({ userId }: TransactionHistoryProps) {
         }
       });
     });
-  }, []);
+  }, [userId]);
   // In a real app, you would fetch transaction data based on userId
   // const transactions = [
   //   {
