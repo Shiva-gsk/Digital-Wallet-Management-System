@@ -71,7 +71,7 @@ export function WithdrawButton({ children, setFlag, flag }: Props) {
             <form onSubmit={(e) => handleDeposit(e)} className="space-y-4">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
-                  $
+                  Rs.
                 </div>
                 <Input
                   type="text"

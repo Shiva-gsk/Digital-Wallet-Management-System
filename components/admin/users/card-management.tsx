@@ -17,7 +17,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 // import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
+// import { Label } from "@/components/ui/label"
 import { fetchWalletbyUserEmail } from "@/lib/getWallet"
 import { useUser } from "@clerk/nextjs"
 import { Wallet } from "@/types"
@@ -92,14 +92,14 @@ export function CardManagement({ userId }: CardManagementProps) {
                   </div>
                   <div>
                     <h3 className="font-medium">User Wallet</h3>
-                    <p className="text-sm text-muted-foreground">{card.number}</p>
+                    {/* <p className="text-sm text-muted-foreground">{card.number}</p> */}
                     {/* <p className="text-sm text-muted-foreground">Expires: {card.expiryDate}</p>
                     {card.isDefault && (
                       <span className="mt-1 inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold">
                         Default
                         </span>
                         )} */}
-                    {card.isFrozen && (
+                    {wallet.isActive && (
                       <span className="mt-1 ml-2 inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-semibold text-red-800">
                         Frozen
                       </span>
@@ -113,7 +113,7 @@ export function CardManagement({ userId }: CardManagementProps) {
                       checked={!card.isFrozen}
                       onCheckedChange={() => toggleCardStatus(card.id)}
                       /> */}
-                    <Label htmlFor={`freeze-${wallet.id}`}>{wallet.isActive ? "Frozen" : "Active"}</Label>
+                    {/* <Label htmlFor={`freeze-${wallet.id}`}>{wallet.isActive ? "Frozen" : "Active"}</Label> */}
                   </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

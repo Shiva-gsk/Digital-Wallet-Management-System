@@ -107,7 +107,7 @@ export function RequestList({
                 </div>
               </div>
               <div className="text-right">
-                <p className="font-semibold">${request.amount}</p>
+                <p className="font-semibold">{request.amount} Rs.</p>
                 {request.status === "pending" ? (
                   <Badge
                     variant="outline"

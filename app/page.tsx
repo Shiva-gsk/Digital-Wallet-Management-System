@@ -212,8 +212,8 @@ export default function Home() {
                               : "text-blue-600"
                           }`}
                         >
-                          {transaction.type === "received" ? "+" : "-"}$
-                          {transaction.amount}
+                          {transaction.type === "received" ? "+" : "-"} 
+                          {transaction.amount} Rs.
                         </p>
                       </div>
                     ))}

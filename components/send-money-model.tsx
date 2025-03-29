@@ -131,7 +131,7 @@ export function SendMoneyModal({ user, onClose }: SendMoneyModalProps) {
 
             <form onSubmit={(e) => handleAmountSubmit(e, user.id)} className="space-y-4">
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">$</div>
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">Rs.</div>
                 <Input
                   type="text"
                   inputMode="decimal"
@@ -165,7 +165,7 @@ export function SendMoneyModal({ user, onClose }: SendMoneyModalProps) {
         {step === "pin" && (
           <div className="space-y-6 py-4">
             <p className="text-center">
-              Enter your PIN to send <span className="font-semibold">${amount}</span> to {user.name}
+              Enter your PIN to send <span className="font-semibold">Rs.{amount}</span> to {user.name}
             </p>
 
             <PinInput length={4} onComplete={handlePinSubmit} />
@@ -189,7 +189,7 @@ export function SendMoneyModal({ user, onClose }: SendMoneyModalProps) {
             </div>
             <p className="text-lg font-medium">Transaction Complete!</p>
             <p className="mb-6 text-sm text-muted-foreground">
-              You&apos;ve sent ${amount} to {user.name}
+              You&apos;ve sent Rs.{amount} to {user.name}
             </p>
             <Button onClick={onClose} className="w-full">
               Done

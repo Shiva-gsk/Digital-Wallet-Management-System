@@ -32,7 +32,7 @@ export const getTransactions = async (email:string) =>{
             }
         }
     })
-    console.log(transactions);
+    // console.log(transactions);
     return transactions;
 }
 

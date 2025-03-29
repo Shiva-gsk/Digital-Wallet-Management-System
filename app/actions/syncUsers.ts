@@ -46,7 +46,7 @@ export const syncUsers = async () => {
         // Create a Wallet first before linking it to the User
         const wallet = await db.wallet.create({
           data: {
-            id: Math.random().toString(36).substring(7),
+            id: Math.random().toString(36).substring(16),
             balance: 0,
           },
         });
@@ -55,7 +55,7 @@ export const syncUsers = async () => {
       }
   
       // Now create or update the User with the correct wallet_id
-      await db.user.upsert({
+      await db.user.  upsert({
         where: { id: user.id },
         update: {
           wallet_id: walletId, // Ensure the wallet_id is set correctly

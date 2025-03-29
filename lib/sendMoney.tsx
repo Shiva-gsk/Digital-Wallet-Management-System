@@ -3,6 +3,11 @@ import { db } from "./db";
 import { fetchUserbyId } from "./getUser";
 import { fetchWalletbyUser } from "./getWallet";
 
+import { EmailTemplate } from '@/components/resend/email-templates';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 export const sendMoneyById = async(senderId: string, receiverId:string, amount:number, desc:string) => {
     const sendUser = await fetchUserbyId(senderId);
     const receiveUser = await fetchUserbyId(receiverId);
@@ -66,7 +71,31 @@ export const sendMoneyById = async(senderId: string, receiverId:string, amount:n
                 userId: senderId,
                 activity_type: "transaction",
             }
-        })
+        });
+
+        try {
+            if(!sendUser || !receiveUser){
+                return false;
+            }
+            const { data, error } = await resend.emails.send({
+              from: 'DigiWallet <noreply@resend.dev>',
+            //   to: [receiveUser?.email],
+                to: "shivakumargulapala2005@gmail.com",
+              subject: 'Hello world',
+              react: await EmailTemplate({ sender: sendUser?.username, receiver: receiveUser?.username, amount }),
+            });
+        
+            if (error) {
+            //   return Response.json({ error }, { status: 500 });
+            console.log(error);
+            console.log(data);
+            }
+        
+            // return Response.json(data);
+          } catch (error) {
+            // return Response.json({ error }, { status: 500 });
+            console.log(error);
+          }
         
         return true;
     }
