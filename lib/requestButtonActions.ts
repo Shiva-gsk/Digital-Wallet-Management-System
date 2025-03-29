@@ -6,7 +6,7 @@ import { sendMoneyById } from "./sendMoney";
 export const acceptMoneyRequest = async (id: string, sender_id: string, receiver_id: string, amount:number) => {
     // console.log(1);
     try{
-        const wallet = await fetchWalletbyUser(sender_id);
+        const wallet = await fetchWalletbyUser(receiver_id);
         // console.log(sender_id);
         // console.log(wallet?.balance);
         if(!wallet || wallet.balance < amount){
@@ -22,7 +22,7 @@ export const acceptMoneyRequest = async (id: string, sender_id: string, receiver
         if(!req){
             return false;
         }
-        const transaction = await sendMoneyById(sender_id, receiver_id, amount, "From Money Request");
+        const transaction = await sendMoneyById( receiver_id, sender_id, amount, "From Money Request");
         
         if(!transaction){
             return false;

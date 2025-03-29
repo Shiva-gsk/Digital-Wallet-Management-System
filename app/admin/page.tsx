@@ -3,9 +3,9 @@ import { DashboardHeader } from "@/components/admin/dashboard-header"
 import { DashboardShell } from "@/components/admin/dashboard-shell"
 import { AnalyticsCards } from "@/components/admin/analytics-cards"
 import { TransactionChart } from "@/components/admin/transaction-chart"
-import { UserActivityChart } from "@/components/admin/user-activity-chart"
+// import { UserActivityChart } from "@/components/admin/user-activity-chart"
 import { TransactionTypeChart } from "@/components/admin/transaction-type-chart"
-import { RecentUsers } from "@/components/admin/recent-users"
+// import { RecentUsers } from "@/components/admin/recent-users"
 import { useEffect, useState } from "react"
 import { useUser } from "@clerk/nextjs"
 import { fetchUserbyEmail } from "@/lib/getUser"
@@ -55,8 +55,8 @@ export default function DashboardPage() {
         </div>
       </div>
       <div className="grid gap-6 md:grid-cols-2 mt-6">
-        <UserActivityChart />
-        <RecentUsers />
+        {/* <UserActivityChart /> */}
+        {/* <RecentUsers /> */}
       </div>
     </DashboardShell>
 }

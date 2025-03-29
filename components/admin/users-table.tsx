@@ -177,7 +177,6 @@ export function UsersTable() {
                       </Link>
                     </TableCell>
                     <TableCell>{user.email}</TableCell>
-
                     {user.user_wallet && (
                       <>
                         {" "}

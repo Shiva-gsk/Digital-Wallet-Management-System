@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { CreditCard, MoreVertical } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -16,8 +16,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { Switch } from "@/components/ui/switch"
+// import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
+import { fetchWalletbyUserEmail } from "@/lib/getWallet"
+import { useUser } from "@clerk/nextjs"
+import { Wallet } from "@/types"
+import LoadingWidget from "@/components/LoadingWidget"
 
 interface CardManagementProps {
   userId: string
@@ -33,19 +37,21 @@ export function CardManagement({ userId }: CardManagementProps) {
       isDefault: true,
       isFrozen: false,
     },
-    {
-      id: "card_2",
-      type: "Mastercard Credit",
-      number: "**** **** **** 8901",
-      expiryDate: "09/24",
-      isDefault: false,
-      isFrozen: false,
-    },
+    // {
+    //   id: "card_2",
+    //   type: "Mastercard Credit",
+    //   number: "**** **** **** 8901",
+    //   expiryDate: "09/24",
+    //   isDefault: false,
+    //   isFrozen: false,
+    // },
   ])
 
   const [freezeDialogOpen, setFreezeDialogOpen] = useState(false)
-  const [selectedCardId, setSelectedCardId] = useState("")
-
+  const [loading, setIsLoading] = useState(true)
+  const [selectedCardId, setSelectedCardId] = useState("");
+  const [wallet, setWallet] = useState<Wallet>({} as Wallet)
+  const {user} = useUser();
   const handleFreezeCard = (cardId: string) => {
     setSelectedCardId(cardId)
     setFreezeDialogOpen(true)
@@ -57,13 +63,22 @@ export function CardManagement({ userId }: CardManagementProps) {
     setFreezeDialogOpen(false)
   }
 
-  const toggleCardStatus = (cardId: string) => {
-    setCards(cards.map((card) => (card.id === cardId ? { ...card, isFrozen: !card.isFrozen } : card)))
-  }
+  // const toggleCardStatus = (cardId: string) => {
+  //   setCards(cards.map((card) => (card.id === cardId ? { ...card, isFrozen: !card.isFrozen } : card)))
+  // }
+  useEffect(()=>{
+    setIsLoading(true);
+    if(!user) return;
+    fetchWalletbyUserEmail(user?.emailAddresses[0].emailAddress).then((data) => {
+      if(data)
+      setWallet(data);
+    }).finally(()=>setIsLoading(false));
+  },[user])
+
 
   return (
     <>
-      <Card>
+    {(loading)? <LoadingWidget/>: <Card>
         <CardHeader>
           <CardTitle>Card Management</CardTitle>
         </CardHeader>
@@ -76,14 +91,14 @@ export function CardManagement({ userId }: CardManagementProps) {
                     <CreditCard className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="font-medium">{card.type}</h3>
+                    <h3 className="font-medium">User Wallet</h3>
                     <p className="text-sm text-muted-foreground">{card.number}</p>
-                    <p className="text-sm text-muted-foreground">Expires: {card.expiryDate}</p>
+                    {/* <p className="text-sm text-muted-foreground">Expires: {card.expiryDate}</p>
                     {card.isDefault && (
                       <span className="mt-1 inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold">
                         Default
-                      </span>
-                    )}
+                        </span>
+                        )} */}
                     {card.isFrozen && (
                       <span className="mt-1 ml-2 inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-semibold text-red-800">
                         Frozen
@@ -93,12 +108,12 @@ export function CardManagement({ userId }: CardManagementProps) {
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="flex items-center space-x-2">
-                    <Switch
+                    {/* <Switch
                       id={`freeze-${card.id}`}
                       checked={!card.isFrozen}
                       onCheckedChange={() => toggleCardStatus(card.id)}
-                    />
-                    <Label htmlFor={`freeze-${card.id}`}>{card.isFrozen ? "Frozen" : "Active"}</Label>
+                      /> */}
+                    <Label htmlFor={`freeze-${wallet.id}`}>{wallet.isActive ? "Frozen" : "Active"}</Label>
                   </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -111,21 +126,22 @@ export function CardManagement({ userId }: CardManagementProps) {
                       <DropdownMenuItem onClick={() => handleFreezeCard(card.id)}>
                         {card.isFrozen ? "Unfreeze card" : "Freeze card"}
                       </DropdownMenuItem>
-                      <DropdownMenuItem>View transactions</DropdownMenuItem>
-                      <DropdownMenuItem>Set as default</DropdownMenuItem>
-                      <DropdownMenuItem className="text-destructive">Remove card</DropdownMenuItem>
+                      {/* <DropdownMenuItem>View transactions</DropdownMenuItem> */}
+                      {/* <DropdownMenuItem>Set as default</DropdownMenuItem> */}
+                      {/* <DropdownMenuItem className="text-destructive">Remove card</DropdownMenuItem> */}
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
               </div>
             </div>
           ))}
-          <Button variant="outline" className="mt-2">
+          {/* <Button variant="outline" className="mt-2">
             <CreditCard className="mr-2 h-4 w-4" />
             Add New Card
-          </Button>
+            </Button> */}
         </CardContent>
       </Card>
+      }
 
       <AlertDialog open={freezeDialogOpen} onOpenChange={setFreezeDialogOpen}>
         <AlertDialogContent>

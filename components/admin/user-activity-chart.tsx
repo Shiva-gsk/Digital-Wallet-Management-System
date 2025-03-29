@@ -1,7 +1,22 @@
-"use client"
+"use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 // Mock data for the chart
 const data = [
@@ -12,14 +27,16 @@ const data = [
   { day: "Fri", active: 190, new: 38 },
   { day: "Sat", active: 230, new: 43 },
   { day: "Sun", active: 210, new: 31 },
-]
+];
 
 export function UserActivityChart() {
   return (
     <Card>
       <CardHeader>
         <CardTitle>User Activity</CardTitle>
-        <CardDescription>Daily active users and new registrations</CardDescription>
+        <CardDescription>
+          Daily active users and new registrations
+        </CardDescription>
       </CardHeader>
       <CardContent className="pl-2">
         <div className="h-[300px]">
@@ -45,6 +62,5 @@ export function UserActivityChart() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
-

@@ -20,7 +20,7 @@ export function UserList({ users, onSendMoney }: UserListProps) {
             <div className="flex items-center">
               <Avatar className="mr-4 h-10 w-10">
                 {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
-                <AvatarFallback>{(user.name)?user.name.charAt(0):"#"}</AvatarFallback>
+                <AvatarFallback>{(user.username)?user.username.charAt(0):"#"}</AvatarFallback>
               </Avatar>
               <div>
                 <p className="font-medium">{user.name}</p>
