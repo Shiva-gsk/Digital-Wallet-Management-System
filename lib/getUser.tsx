@@ -15,7 +15,8 @@ export const fetchUserbyName = async (name: string) => {
     }
 };
 
-export const fetchUserbyEmail = async (email: string) => {
+export const fetchUserbyEmail = async (email: string | undefined) => {
+    if(!email) return null;
     try{
         const user = await db.user.findFirst({
             where:{
