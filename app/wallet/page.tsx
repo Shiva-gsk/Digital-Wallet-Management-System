@@ -16,7 +16,7 @@ import { DepositButton } from "@/components/depositButton";
 import { WithdrawButton } from "@/components/withdrawButton";
 import LoadingWidget from "@/components/LoadingWidget";
 import { SetPassword } from "@/components/setPassword";
-import { updatePhoneNumber } from "../actions/verifyPhoneNum";
+// import { updatePhoneNumber } from "../actions/verifyPhoneNum";
 import PhoneNumberForm from "@/components/phoneNumberForm";
 export default function WalletPage() {
   const [showBalance, setShowBalance] = useState(false);
