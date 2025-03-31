@@ -297,7 +297,7 @@ export function RequestList({
       );
     }
   }
-
+  
   function processPayment(
     request_id: string,
     sender_id: string,
@@ -305,23 +305,26 @@ export function RequestList({
     amount: number,
     pin: string
   ): void {
-
-    fetchUserbyEmail(user?.emailAddresses[0].emailAddress).then((data) => {
-      if (data) {
-        // setCurrentUser(data);
-        // if(!data?.pin) return;
+    // First validate the PIN
+    fetchUserbyEmail(user?.emailAddresses[0].emailAddress)
+      .then((data) => {
+        if (!data) {
+          throw new Error("User data not found");
+        }
+        
         if (data.password !== Number(pin)) {
           toast("Payment Failed", {
             description: "Invalid PIN. Please try again",
             style: { color: "red" },
           });
-          return;
+          throw new Error("Invalid PIN"); // This will prevent the next .then from executing
         }
-        // Proceed with payment if PIN is valid
-      }
-    });
-    acceptMoneyRequest(request_id, sender_id, receiver_id, amount).then(
-      (res) => {
+        
+        // Only proceed to payment if PIN validation passes
+        return acceptMoneyRequest(request_id, sender_id, receiver_id, amount);
+      })
+      .then((res) => {
+        // This will only run if PIN validation passed
         if (res) {
           setFlag(!flag);
           toast("Payment Successful", {
@@ -335,14 +338,17 @@ export function RequestList({
             style: { color: "red" },
           });
         }
-      }
-    ).catch((e) => {
-      console.log(e);
-      toast("Payment Failed", {
-        description: "An error occurred. Please try again",
-        style: { color: "red" },
+      })
+      .catch((e) => {
+        console.log(e);
+        // Only show generic error if it wasn't already handled
+        if (e.message !== "Invalid PIN") {
+          toast("Payment Failed", {
+            description: "An error occurred. Please try again",
+            style: { color: "red" },
+          });
+        }
       });
-    });
   }
 
   return (
