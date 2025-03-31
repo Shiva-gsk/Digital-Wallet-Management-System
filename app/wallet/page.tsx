@@ -29,16 +29,17 @@ export default function WalletPage() {
   const [flag, setFlag] = useState(false);
 
 
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [message, setMessage] = useState('')
+  // const [phoneNumber, setPhoneNumber] = useState('');
+  // const [message, setMessage] = useState('')
   
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    if(!user) return;
-    const result = await updatePhoneNumber(user.id, phoneNumber)
+  // async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  //   e.preventDefault()
+  //   if(!user) return;
+  //   // setPhoneNumber(phoneNumber);
+  //   const result = await updatePhoneNumber(user.id, phoneNumber)
     
-    setMessage(result.message)
-  }
+  //   setMessage(result.message)
+  // }
 
   const handleVerifyPin = (pin: string) => {
     if (!currentUser) {
