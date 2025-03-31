@@ -17,6 +17,7 @@ import { WithdrawButton } from "@/components/withdrawButton";
 import LoadingWidget from "@/components/LoadingWidget";
 import { SetPassword } from "@/components/setPassword";
 import { updatePhoneNumber } from "../actions/verifyPhoneNum";
+import PhoneNumberForm from "@/components/phoneNumberForm";
 export default function WalletPage() {
   const [showBalance, setShowBalance] = useState(false);
   const [pinVerified, setPinVerified] = useState(false);
@@ -153,7 +154,8 @@ export default function WalletPage() {
         <DepositButton setFlag={setFlag} flag={flag}>Deposit</DepositButton>
         <WithdrawButton setFlag={setFlag} flag={flag}>Withdraw</WithdrawButton>
       </div>
-      <form onSubmit={handleSubmit}>
+      <PhoneNumberForm />
+      {/* <form onSubmit={handleSubmit}>
         <label>
           Phone Number:
           <input 
@@ -166,7 +168,7 @@ export default function WalletPage() {
         <button type="submit">Update Phone Number</button>
         
         {message && <p>{message}</p>}
-      </form>
+      </form> */}
       {/* <Tabs defaultValue="transactions" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="transactions">Transactions</TabsTrigger>
