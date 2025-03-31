@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { groupTransactionsByMonth } from "@/lib/getTransactions";
+import { groupTransactionsByMonth } from "@/app/actions/getTransactions";
 import { useEffect, useState } from "react";
 import {
   Area,

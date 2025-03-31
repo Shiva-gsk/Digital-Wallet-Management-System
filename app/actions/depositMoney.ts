@@ -1,6 +1,6 @@
 "use server"
 
-import { db } from "./db";
+import { db } from "../../lib/db";
 import { fetchUserbyEmail } from "./getUser";
 import { fetchWalletbyUserEmail } from "./getWallet"
 

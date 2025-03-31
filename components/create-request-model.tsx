@@ -15,10 +15,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { UserList } from "@/components/request-user-list";
 // import type { UserType } from "@/app/send-money/page";
-import { fetchAllUsers } from "@/lib/getUser";
+import { fetchAllUsers } from "@/app/actions/getUser";
 import { useUser } from "@clerk/nextjs";
 import { UserType } from "@/types";
-import { storeMoneyRequest } from "@/lib/storeMoneyRequest";
+import { storeMoneyRequest } from "@/app/actions/storeMoneyRequest";
 interface CreateRequestModalProps {
   onClose: () => void;
 }

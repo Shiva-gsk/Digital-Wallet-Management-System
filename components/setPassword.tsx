@@ -12,7 +12,7 @@ import { useState, useTransition } from "react";
 import { useUser } from "@clerk/nextjs";
 
 import { PinInput } from "./pin-input";
-import { changePassword } from "@/lib/changePassword";
+import { changePassword } from "@/app/actions/changePassword";
 
 interface Props {
   children: React.ReactNode;

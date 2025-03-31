@@ -190,7 +190,7 @@ import { MoneyRequest } from "@/types";
 import {
   acceptMoneyRequest,
   cancelMoneyRequest,
-} from "@/lib/requestButtonActions";
+} from "@/app/actions/requestButtonActions";
 import { toast } from "sonner";
 import { useState } from "react";
 import { PinInput } from "@/components/pin-input";
@@ -202,7 +202,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { fetchUserbyEmail } from "@/lib/getUser";
+import { fetchUserbyEmail } from "@/app/actions/getUser";
 import { useUser } from "@clerk/nextjs";
 
 interface RequestListProps {

@@ -2,7 +2,7 @@
 import { UsersTable } from "@/components/admin/users-table"
 import { DashboardHeader } from "@/components/admin/dashboard-header"
 import { DashboardShell } from "@/components/admin/dashboard-shell"
-import { fetchUserbyEmail } from "@/lib/getUser"
+import { fetchUserbyEmail } from "@/app/actions/getUser"
 import { useUser } from "@clerk/nextjs"
 // import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"

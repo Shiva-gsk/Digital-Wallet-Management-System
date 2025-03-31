@@ -11,7 +11,7 @@ import {
 import { Input } from "./ui/input";
 import { FormEvent, useState, useTransition } from "react";
 import { useUser } from "@clerk/nextjs";
-import { depositMoney } from "@/lib/depositMoney";
+import { depositMoney } from "@/app/actions/depositMoney";
 
 interface Props {
   children: React.ReactNode;

@@ -1,5 +1,5 @@
 "use server"
-import { db } from "./db";
+import { db } from "../../lib/db";
 
 export const storeMoneyRequest = async(senderId: string, receiverId:string, amount:number, desc:string="Rent") => {
     console.log(senderId, receiverId, amount, desc);

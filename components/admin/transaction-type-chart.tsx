@@ -1,7 +1,7 @@
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { getPieChartStats } from "@/lib/getAggregateStats";
+import { getPieChartStats } from "@/app/actions/getAggregateStats";
 import { useEffect, useState } from "react";
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts"
 import LoadingWidget from "../LoadingWidget";

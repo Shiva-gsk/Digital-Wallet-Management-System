@@ -11,11 +11,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { PinInput } from "@/components/pin-input"
-import { fetchWalletbyUser } from "@/lib/getWallet"
+import { fetchWalletbyUser } from "@/app/actions/getWallet"
 import { useUser } from "@clerk/nextjs"
-import { sendMoneyById } from "@/lib/sendMoney"
+import { sendMoneyById } from "@/app/actions/sendMoney"
 import { Textarea } from "./ui/textarea"
-import { fetchUserbyEmail } from "@/lib/getUser"
+import { fetchUserbyEmail } from "@/app/actions/getUser"
 
 interface SendMoneyModalProps {
   user: UserType

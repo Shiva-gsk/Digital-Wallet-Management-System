@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UserList } from "@/components/user-list";
 import { SendMoneyModal } from "@/components/send-money-model";
-import { fetchAllUsers } from "@/lib/getUser";
+import { fetchAllUsers } from "@/app/actions/getUser";
 import { useUser } from "@clerk/nextjs";
 // import Loading from "@/components/loading";
 import  SkeletonDemo  from "./loading";

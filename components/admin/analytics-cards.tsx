@@ -2,7 +2,7 @@
 
 import { ArrowDown, ArrowUp, CreditCard, DollarSign, Users, Wallet } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { getDashboardStats } from "@/lib/getAggregateStats";
+import { getDashboardStats } from "@/app/actions/getAggregateStats";
 import { useEffect, useState } from "react";
 import { Stats } from "@/types";
 import LoadingWidget from "../LoadingWidget";

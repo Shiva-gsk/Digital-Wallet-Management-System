@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/alert-dialog"
 // import { Switch } from "@/components/ui/switch"
 // import { Label } from "@/components/ui/label"
-import { fetchWalletbyUserEmail } from "@/lib/getWallet"
+import { fetchWalletbyUserEmail } from "@/app/actions/getWallet"
 import { useUser } from "@clerk/nextjs"
 import { Wallet } from "@/types"
 import LoadingWidget from "@/components/LoadingWidget"

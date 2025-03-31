@@ -1,6 +1,6 @@
 "use server"
 
-import { db } from "./db";
+import { db } from "../../lib/db";
 
 export const fetchActivities = async (id: string) =>{
     try{

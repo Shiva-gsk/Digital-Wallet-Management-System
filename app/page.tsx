@@ -7,11 +7,13 @@ import Link from "next/link";
 import { Wallet, SendHorizonal, FileText, Loader2 } from "lucide-react";
 import Header from "@/components/Navbar";
 import { useEffect, useState, useTransition } from "react";
-import { getTransactions } from "@/lib/getTransactions";
+import { getTransactions } from "@/app/actions/getTransactions";
 import { Transactions } from "@/types";
 import { syncUsers } from "./actions/syncUsers";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   const [recentTransactions, setRecentTransactions] = useState<Transactions[]>(
     []
   );
@@ -26,7 +28,10 @@ export default function Home() {
       }
     };
     fetchData();
-  }, [isSignedIn]); // Dependency added to prevent unnecessary calls
+    if(!user){
+      router.push("/signIn");
+    }
+  }, [isSignedIn, user, router]); // Dependency added to prevent unnecessary calls
 
   useEffect(() => {
     startTransition(() => {
@@ -51,10 +56,10 @@ export default function Home() {
     <main>
       <Header />
       <SignedOut>
-        <p>
+        {/* <p>
           Please log in to see the user button.
           <Link href={"/signIn"}>SignIn</Link>
-        </p>
+        </p> */}
       </SignedOut>
       <SignedIn>
         <div className="flex justify-between items-center gap-4">

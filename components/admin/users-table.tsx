@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/select";
 // import { Badge } from "@/components/ui/badge"
 import { UserTypeWithWallet } from "@/types";
-import { fetchAllUsersWithWallet } from "@/lib/getUser";
+import { fetchAllUsersWithWallet } from "@/app/actions/getUser";
 import { useUser } from "@clerk/nextjs";
 import LoadingWidget from "../LoadingWidget";
 

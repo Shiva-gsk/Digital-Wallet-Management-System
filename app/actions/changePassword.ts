@@ -1,6 +1,6 @@
 "use server"
 
-import { db } from "./db"
+import { db } from "../../lib/db"
 
 export const changePassword = async (email: string, password: number) => {
     try{

@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RequestList } from "@/components/request-list";
 import { CreateRequestModal } from "@/components/create-request-model";
 // import type { UserType } from "@/app/send-money/page"
-import { getMoneyRequests } from "@/lib/getMoneyRequests";
+import { getMoneyRequests } from "@/app/actions/getMoneyRequests";
 import { useUser } from "@clerk/nextjs";
 import { MoneyRequest } from "@/types";
 

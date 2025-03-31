@@ -27,7 +27,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEffect, useState, useTransition } from "react";
-import { getTransactionsById } from "@/lib/getTransactions";
+import { getTransactionsById } from "@/app/actions/getTransactions";
 import { Transactions } from "@/types";
 import LoadingWidget from "../../LoadingWidget";
 

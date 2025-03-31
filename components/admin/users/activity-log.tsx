@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 // import { useUser } from "@clerk/nextjs";
 // import { start } from "repl";
-import { fetchActivities } from "@/lib/getActivities";
+import { fetchActivities } from "@/app/actions/getActivities";
 import LoadingWidget from "../../LoadingWidget";
 // import { format } from "date-fns";  // For date formatting
 

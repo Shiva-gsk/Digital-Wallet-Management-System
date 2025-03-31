@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 // import { Badge } from "@/components/ui/badge"
 import { useEffect, useState, useTransition } from "react";
 import { UserTypeWithWallet } from "@/types";
-import { fetchUserWithWallet } from "@/lib/getUser";
+import { fetchUserWithWallet } from "@/app/actions/getUser";
 import LoadingWidget from "../../LoadingWidget";
 
 interface UserDetailsProps {

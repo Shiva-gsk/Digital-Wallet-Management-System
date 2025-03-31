@@ -9,13 +9,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card_u
 // import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PinInput } from "@/components/pin-input";
 import { useUser } from "@clerk/nextjs";
-import { fetchWalletbyUser } from "@/lib/getWallet";
+import { fetchWalletbyUser } from "@/app/actions/getWallet";
 import { UserType } from "@/types";
-import { fetchUserbyId } from "@/lib/getUser";
+import { fetchUserbyId } from "@/app/actions/getUser";
 import { DepositButton } from "@/components/depositButton";
 import { WithdrawButton } from "@/components/withdrawButton";
 import LoadingWidget from "@/components/LoadingWidget";
 import { SetPassword } from "@/components/setPassword";
+import { updatePhoneNumber } from "../actions/verifyPhoneNum";
 export default function WalletPage() {
   const [showBalance, setShowBalance] = useState(false);
   const [pinVerified, setPinVerified] = useState(false);
@@ -25,6 +26,18 @@ export default function WalletPage() {
   const [isPending, startTransition] = useTransition();
   const [updatedAt, setUpdatedAt] = useState("");
   const [flag, setFlag] = useState(false);
+
+
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [message, setMessage] = useState('')
+  
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    if(!user) return;
+    const result = await updatePhoneNumber(user.id, phoneNumber)
+    
+    setMessage(result.message)
+  }
 
   const handleVerifyPin = (pin: string) => {
     if (!currentUser) {
@@ -140,6 +153,20 @@ export default function WalletPage() {
         <DepositButton setFlag={setFlag} flag={flag}>Deposit</DepositButton>
         <WithdrawButton setFlag={setFlag} flag={flag}>Withdraw</WithdrawButton>
       </div>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Phone Number:
+          <input 
+            type="tel" 
+            value={phoneNumber} 
+            onChange={(e) => setPhoneNumber(e.target.value)} 
+          />
+        </label>
+        
+        <button type="submit">Update Phone Number</button>
+        
+        {message && <p>{message}</p>}
+      </form>
       {/* <Tabs defaultValue="transactions" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="transactions">Transactions</TabsTrigger>
@@ -232,40 +259,3 @@ export default function WalletPage() {
   );
 }
 
-// const transactions = [
-//   {
-//     id: 1,
-//     description: "Payment to John Doe",
-//     amount: "25.00",
-//     type: "sent",
-//     date: "Today, 2:30 PM",
-//   },
-//   {
-//     id: 2,
-//     description: "Received from Jane Smith",
-//     amount: "42.50",
-//     type: "received",
-//     date: "Yesterday, 11:15 AM",
-//   },
-//   {
-//     id: 3,
-//     description: "Coffee Shop",
-//     amount: "5.75",
-//     type: "sent",
-//     date: "Mar 14, 9:20 AM",
-//   },
-//   {
-//     id: 4,
-//     description: "Salary Deposit",
-//     amount: "1,200.00",
-//     type: "received",
-//     date: "Mar 10, 8:00 AM",
-//   },
-//   {
-//     id: 5,
-//     description: "Grocery Store",
-//     amount: "65.30",
-//     type: "sent",
-//     date: "Mar 8, 5:45 PM",
-//   },
-// ];
