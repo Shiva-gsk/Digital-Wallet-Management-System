@@ -28,7 +28,8 @@ export default function PhoneNumberForm() {
     handleSubmit: handleFormSubmit, 
     setValue,
     formState: { errors },
-    reset
+    reset,
+    watch
   } = useForm<PhoneFormValues>({
     resolver: zodResolver(phoneSchema),
     defaultValues: {
@@ -44,6 +45,7 @@ export default function PhoneNumberForm() {
     try {
       const result = await updatePhoneNumber(user.id, data.phoneNumber);
       setMessage(result.message);
+      console.log(register);
       setStatus("success");
       
       // Reset form after successful submission
@@ -55,6 +57,7 @@ export default function PhoneNumberForm() {
     } catch (error) {
       setMessage("Failed to update phone number. Please try again.");
       setStatus("error");
+      console.log(error);
     }
   }
   
@@ -71,8 +74,8 @@ export default function PhoneNumberForm() {
             Phone Number:
           </label>
           <PhoneInput
-            defaultCountry="us"
-            value={register("phoneNumber").value}
+            value={watch("phoneNumber")}
+            // value={register("phoneNumber").value}
             onChange={(value) => setValue("phoneNumber", value)}
             className="mt-1 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
           />
@@ -110,7 +113,7 @@ export default function PhoneNumberForm() {
         )}
         
         <p className="text-xs text-gray-500 text-center">
-          We'll only use your phone number for account security and verification purposes.
+          We&apos;ll only use your phone number for account security and verification purposes.
         </p>
       </form>
     </div>

@@ -99,7 +99,7 @@ export function CardManagement({ userId }: CardManagementProps) {
                         Default
                         </span>
                         )} */}
-                    {wallet.isActive && (
+                    {!wallet.isActive && (
                       <span className="mt-1 ml-2 inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-semibold text-red-800">
                         Frozen
                       </span>

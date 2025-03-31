@@ -48,7 +48,7 @@ export default function Header() {
               ele.scrollIntoView({behavior: "smooth", block: "start"});
             };
   }}>
-            Features
+            
 
           </button>
           </Link>
@@ -59,7 +59,7 @@ export default function Header() {
               ele.scrollIntoView({behavior: "smooth", block: "start"});
             };
           }}>
-            How it Works
+            
           </button>
           </Link>
           <Link href="#pricing" className="text-muted-foreground hover:text-primary">
@@ -69,7 +69,7 @@ export default function Header() {
               ele.scrollIntoView({behavior: "smooth", block: "start"});
             };
   }}>
-            Pricing
+            
             </button>
           </Link>
         </nav>
