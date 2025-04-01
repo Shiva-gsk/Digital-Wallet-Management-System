@@ -42,7 +42,7 @@ export const depositMoney = async (email: string, amount:number) =>{
                 data:{
                     userId: sendUser?.id,
                     activity_type: "Deposit",
-                    details: `Deposited ${amount}`
+                    details: `Deposited ${amount} Rs.`
                 }
             })
             return false;
@@ -75,8 +75,8 @@ export const withdrawMoney = async (email: string, amount:number) =>{
             await db.activityLog.create({
                 data:{
                     userId: sendUser?.id,
-                    activity_type: "Deposit",
-                    details: `Deposited ${amount}`
+                    activity_type: "Withdrawal",
+                    details: `Withdrawal of ${amount} Rs.`
                 }
             })
             return {success: true, message: "Money Withdrawn Successfully"};

@@ -4,13 +4,20 @@ import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import { Card, CardContent } from "@/components/ui/card_ui";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Wallet, SendHorizonal, FileText, Loader2 } from "lucide-react";
+import {
+  Wallet,
+  SendHorizonal,
+  FileText,
+  Loader2,
+  Activity,
+} from "lucide-react";
 import Header from "@/components/Navbar";
 import { useEffect, useState, useTransition } from "react";
 import { getTransactions } from "@/app/actions/getTransactions";
 import { Transactions } from "@/types";
 import { syncUsers } from "./actions/syncUsers";
 import { useRouter } from "next/navigation";
+import ActivityLogModal from "@/components/userActivityLog";
 
 export default function Home() {
   const router = useRouter();
@@ -28,7 +35,7 @@ export default function Home() {
       }
     };
     fetchData();
-    if(!user){
+    if (!user) {
       router.push("/signIn");
     }
   }, [isSignedIn, user, router]); // Dependency added to prevent unnecessary calls
@@ -36,16 +43,21 @@ export default function Home() {
   useEffect(() => {
     startTransition(() => {
       if (user) {
-        getTransactions(user.emailAddresses[0].emailAddress).then((transactions) => {
-          if(transactions === null){
-            return;
+        getTransactions(user.emailAddresses[0].emailAddress).then(
+          (transactions) => {
+            if (transactions === null) {
+              return;
+            }
+            const updated: Transactions[] = transactions.map((transaction) => ({
+              ...transaction,
+              type:
+                transaction.sender.email === user.emailAddresses[0].emailAddress
+                  ? "sent"
+                  : "received",
+            }));
+            setRecentTransactions(updated.reverse());
           }
-          const updated: Transactions[] = transactions.map((transaction) => ({
-            ...transaction,
-            type: transaction.sender.email === user.emailAddresses[0].emailAddress ? "sent" : "received",
-          }));
-          setRecentTransactions(updated.reverse());
-        });
+        );
       } else {
         setRecentTransactions([]);
       }
@@ -217,7 +229,7 @@ export default function Home() {
                               : "text-blue-600"
                           }`}
                         >
-                          {transaction.type === "received" ? "+" : "-"} 
+                          {transaction.type === "received" ? "+" : "-"}
                           {transaction.amount} Rs.
                         </p>
                       </div>
@@ -226,12 +238,10 @@ export default function Home() {
 
                   <Button
                     onClick={() => {
-                      if(!toggle){
-
+                      if (!toggle) {
                         setToggle(!toggle);
                         setItems(recentTransactions.length);
-                      }
-                      else{
+                      } else {
                         setToggle(!toggle);
                         setItems(5);
                       }
@@ -246,6 +256,17 @@ export default function Home() {
             </div>
           )}
         </div>
+        <ActivityLogModal>
+          <Card className="h-full transition-all hover:shadow-md cursor-pointer">
+            <CardContent className="flex flex-col items-center justify-center p-6">
+              <Activity className="mb-4 h-12 w-12 text-purple-500" />
+              <h2 className="text-xl font-semibold">Activity Log</h2>
+              <p className="mt-2 text-center text-muted-foreground">
+                View a detailed log of all your wallet activities
+              </p>
+            </CardContent>
+          </Card>
+        </ActivityLogModal>
       </SignedIn>
     </main>
   );

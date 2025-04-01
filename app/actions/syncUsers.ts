@@ -46,7 +46,7 @@ export const syncUsers = async () => {
         // Create a Wallet first before linking it to the User
         const wallet = await db.wallet.create({
           data: {
-            id: Math.random().toString(36).substring(16),
+            id: Math.random().toString(36).substring(7),
             balance: 0,
           },
         });

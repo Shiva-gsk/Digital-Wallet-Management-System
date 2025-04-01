@@ -80,3 +80,11 @@ export interface Wallet{
   updatedAt: Date;
   isActive: boolean;
 }
+
+export interface ActivityLog {
+  id: string;
+  userId: string;
+  activity_type: string;
+  details: string;
+  timestamp: Date;
+}
