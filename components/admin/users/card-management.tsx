@@ -18,17 +18,19 @@ import {
 } from "@/components/ui/alert-dialog"
 // import { Switch } from "@/components/ui/switch"
 // import { Label } from "@/components/ui/label"
-import { fetchWalletbyUserEmail } from "@/app/actions/getWallet"
+import { fetchWalletbyUser } from "@/app/actions/getWallet"
 import { useUser } from "@clerk/nextjs"
 import { Wallet } from "@/types"
 import LoadingWidget from "@/components/LoadingWidget"
+import { toggleWalletActive } from "@/app/actions/freezeCard"
+import { toast } from "sonner"
 
 interface CardManagementProps {
   userId: string
 }
 
 export function CardManagement({ userId }: CardManagementProps) {
-  const [cards, setCards] = useState([
+  const [cards, ] = useState([
     {
       id: "card_1",
       type: "Visa Debit",
@@ -59,7 +61,20 @@ export function CardManagement({ userId }: CardManagementProps) {
   }
 
   const confirmFreezeCard = () => {
-    setCards(cards.map((card) => (card.id === selectedCardId ? { ...card, isFrozen: !card.isFrozen } : card)))
+    toggleWalletActive(wallet.id, userId).then((res) => {
+      if(res.success){
+        setWallet((prev) => ({...prev, isActive: !prev.isActive}))
+        toast.success(res.message, {
+          style: { color: "green" },
+        })
+      }
+      else{
+        toast.error(res.message, {
+          style: { color: "red" },
+        })
+      }
+    })
+    //setCards(cards.map((card) => (card.id === selectedCardId ? { ...card, isFrozen: !card.isFrozen } : card)))
     setFreezeDialogOpen(false)
   }
 
@@ -69,11 +84,11 @@ export function CardManagement({ userId }: CardManagementProps) {
   useEffect(()=>{
     setIsLoading(true);
     if(!user) return;
-    fetchWalletbyUserEmail(user?.emailAddresses[0].emailAddress).then((data) => {
+    fetchWalletbyUser(userId).then((data) => {
       if(data)
       setWallet(data);
     }).finally(()=>setIsLoading(false));
-  },[user])
+  },[user, userId])
 
 
   return (
@@ -123,8 +138,8 @@ export function CardManagement({ userId }: CardManagementProps) {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => handleFreezeCard(card.id)}>
-                        {card.isFrozen ? "Unfreeze card" : "Freeze card"}
+                      <DropdownMenuItem onClick={() => handleFreezeCard(wallet.id)}>
+                        {!wallet.isActive ? "Unfreeze card" : "Freeze card"}
                       </DropdownMenuItem>
                       {/* <DropdownMenuItem>View transactions</DropdownMenuItem> */}
                       {/* <DropdownMenuItem>Set as default</DropdownMenuItem> */}

@@ -30,11 +30,11 @@ export function SendMoneyModal({ user, onClose }: SendMoneyModalProps) {
   const [balance, setBalance] = useState(0);
   const [money, setMoney] = useState(0);
   const [receiver, setReceiver] = useState("");
-  const { user: clerkUser, isLoaded } = useUser();
+  const { user: clerkUser } = useUser();
   const [userPin, setUserPin] = useState(0);
 
   useEffect(()=>{
-    if(isLoaded && clerkUser){
+    if(clerkUser){
       fetchUserbyEmail(clerkUser.emailAddresses[0].emailAddress).then((data)=>{
         if(data && data.password){
           setUserPin(data.password);
@@ -43,12 +43,12 @@ export function SendMoneyModal({ user, onClose }: SendMoneyModalProps) {
       // console.log(clerkUser);
       fetchWalletbyUser(clerkUser.id).then((data) => {
         if (data) {
-          setBalance(data.balance)
+          setBalance(data.balance);
         }
       });
       // console.log(balance);
     }
-  }, [isLoaded, user, balance, clerkUser])
+  }, [user, balance, clerkUser])
 
   const handleAmountSubmit = (e: React.FormEvent, id: string) => {
     
