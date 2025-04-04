@@ -217,6 +217,7 @@ export default function Home() {
                                       ?.slice(1)
                                       .toLowerCase()}
                             </p>
+                            <p>{transaction.desc}</p>
                             <p className="text-sm text-muted-foreground">
                               {transaction.transaction_date.toLocaleString()}
                             </p>
