@@ -43,7 +43,8 @@ export const sendMoneyById = async(senderId: string, receiverId:string, amount:n
                 status: "completed",
                 amount,
                 sender: {connect: {id: senderId}},
-                receiver: {connect: {id: receiverId}}
+                receiver: {connect: {id: receiverId}},
+                desc
             }
         })
 
