@@ -26,6 +26,13 @@ export const depositMoney = async (email: string, amount:number) =>{
 
                 }
             })
+            await db.activityLog.create({
+                data:{
+                    userId: sendUser?.id,
+                    activity_type: "Deposit",
+                    details: `Deposited ${amount} Rs.`
+                }
+            })
             return true;
         }
         catch{
@@ -38,13 +45,6 @@ export const depositMoney = async (email: string, amount:number) =>{
                 }
             })
 
-            await db.activityLog.create({
-                data:{
-                    userId: sendUser?.id,
-                    activity_type: "Deposit",
-                    details: `Deposited ${amount} Rs.`
-                }
-            })
             return false;
         }
 }

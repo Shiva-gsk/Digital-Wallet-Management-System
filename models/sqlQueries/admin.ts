@@ -21,7 +21,7 @@ export const fetchActivities = async (id: string) => {
 };
 
 
-// 📊 Get Dashboard Stats
+//  Get Dashboard Stats
 export async function getDashboardStats() {
     try {
         const [userCount, transactionCount, totalMoney, walletCount] = await Promise.all([
@@ -49,7 +49,7 @@ export async function getDashboardStats() {
     }
 }
 
-// 🥧 Get Pie Chart Stats
+//  Get Pie Chart Stats
 export async function getPieChartStats() {
     try {
         const [withdrawal, transaction, deposit] = await Promise.all([

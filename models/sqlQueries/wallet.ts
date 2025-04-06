@@ -36,19 +36,3 @@ export const fetchWalletbyUserEmail = async (email: string) => {
     }
 };
 
-// Fetch Wallet by User ID with Raw SQL Execution
-export const fetchWalletbyUserRaw = async (id: string) => {
-    try {
-        const wallet:Wallet[] = await db.$queryRaw`
-        SELECT w.*
-        FROM "Wallet" w
-        JOIN "User" u ON u.wallet_id = w.id
-        WHERE u.id = ${id}
-        LIMIT 1;
-        `;
-
-        return wallet[0] || null;
-    } catch {
-        return null;
-    }
-};

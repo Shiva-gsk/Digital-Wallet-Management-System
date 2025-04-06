@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { fetchUserbyEmail } from "./user";
 import { fetchWalletbyUserEmail } from "./wallet";
 
-// 💰 Deposit Money
+//  Deposit Money
 export const depositMoney = async (email: string, amount: number) => {
     const sendUser = await fetchUserbyEmail(email);
     const sender = await fetchWalletbyUserEmail(email);
@@ -58,7 +58,7 @@ export const depositMoney = async (email: string, amount: number) => {
     }
 };
 
-// 💸 Withdraw Money
+//  Withdraw Money
 export const withdrawMoney = async (email: string, amount: number) => {
     const sender = await fetchWalletbyUserEmail(email);
     const sendUser = await fetchUserbyEmail(email);
