@@ -4,6 +4,9 @@ import { db } from "../../lib/db";
 export const storeMoneyRequest = async(senderId: string, receiverId:string, amount:number, desc:string="Rent") => {
     console.log(senderId, receiverId, amount, desc);
     try{
+        const receiver = await db.user.findFirst({
+            where: {id: receiverId}
+        })
         await db.moneyRequest.create({
             data:{
                 receiver_id:receiverId,
@@ -18,7 +21,7 @@ export const storeMoneyRequest = async(senderId: string, receiverId:string, amou
                         data:{
                             userId: senderId,
                             activity_type: "Money Request",
-                            details: `Requested ${amount} Rs. from ${receiverId}`
+                            details: `Requested ${amount} Rs. from ${receiver?.username}`
                         }
                     })
         return true;
