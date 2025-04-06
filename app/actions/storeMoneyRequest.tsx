@@ -13,6 +13,14 @@ export const storeMoneyRequest = async(senderId: string, receiverId:string, amou
                 desc:desc,
             }
         })
+
+        await db.activityLog.create({
+                        data:{
+                            userId: senderId,
+                            activity_type: "Money Request",
+                            details: `Requested ${amount} Rs. from ${receiverId}`
+                        }
+                    })
         return true;
     }
     catch(e){
