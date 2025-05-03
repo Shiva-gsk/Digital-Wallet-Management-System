@@ -268,31 +268,10 @@ export default function Home() {
             </CardContent>
           </Card>
         </ActivityLogModal>
+    <footer className="text-gray-600" style={{ textAlign: 'center', padding: '1rem', marginTop: '2rem' }}>
+    <p>© {new Date().getFullYear()} DigiWallet. All rights reserved.</p>
+  </footer>
       </SignedIn>
     </main>
   );
 }
-
-// const recentTransactions = [
-//   {
-//     id: 1,
-//     user: "John Doe",
-//     amount: "25.00",
-//     type: "sent",
-//     date: "Today, 2:30 PM",
-//   },
-//   {
-//     id: 2,
-//     user: "Jane Smith",
-//     amount: "42.50",
-//     type: "received",
-//     date: "Yesterday, 11:15 AM",
-//   },
-//   {
-//     id: 3,
-//     user: "Mike Johnson",
-//     amount: "10.75",
-//     type: "sent",
-//     date: "Mar 14, 9:20 AM",
-//   },
-// ]
